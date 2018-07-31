@@ -86,4 +86,9 @@ class UserController extends Controller
             'email' => $userData->email,
         ];
     }
+
+    public function getTotalUsersRegistered()
+    {
+        return $this->serviceCrud->all()->count();
+    }
 }

@@ -7,4 +7,10 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'user', 'namespace' => '
     Route::get('{id}', 'UserController@find');
     Route::put('{id}', 'UserController@update');
     Route::get('{queryParams?}', 'UserController@all');
+
+
+
+    Route::group(['prefix' => 'query-extra-module'], function () {
+        Route::get('qtd-users-registered', 'UserController@getTotalUsersRegistered');
+    });
 });

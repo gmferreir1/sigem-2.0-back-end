@@ -30,7 +30,13 @@
         "psr-4": {
             "App\\": "app/",
             "Modules\\": "Modules/"
-        }
+        },
+        "files": [
+          "app/Helpers/String.php",
+          "app/Helpers/Masks.php",
+          "app/Helpers/DateTime.php",
+          "app/Helpers/Number.php"
+        ]
     },
     "autoload-dev": {
         "psr-4": {

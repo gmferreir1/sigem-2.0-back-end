@@ -1,12 +1,10 @@
 <?php
 
-namespace App\Repositories;
+namespace Modules\User\Repositories;
 
+use Modules\User\Entities\User;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
-use App\Repositories\UserRepository;
-use App\Entities\User;
-use App\Validators\UserValidator;
 
 /**
  * Class UserRepositoryEloquent.
@@ -15,6 +13,13 @@ use App\Validators\UserValidator;
  */
 class UserRepositoryEloquent extends BaseRepository implements UserRepository
 {
+
+    protected $fieldSearchable = [
+        'name',
+        'last_name',
+        'email',
+    ];
+
     /**
      * Specify Model class name
      *
@@ -24,18 +29,6 @@ class UserRepositoryEloquent extends BaseRepository implements UserRepository
     {
         return User::class;
     }
-
-    /**
-    * Specify Validator class name
-    *
-    * @return mixed
-    */
-    public function validator()
-    {
-
-        return UserValidator::class;
-    }
-
 
     /**
      * Boot up the repository, pushing criteria

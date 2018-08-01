@@ -1,0 +1,16 @@
+{
+    "name": "ManagerAction",
+    "alias": "manageraction",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\ManagerAction\\Providers\\ManagerActionServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}

@@ -1,0 +1,16 @@
+{
+    "name": "Termination",
+    "alias": "termination",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Termination\\Providers\\TerminationServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}

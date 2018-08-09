@@ -16,3 +16,18 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('query-cep/{cep}', function ($cep) {
+
+    try {
+        $url = file_get_contents("https://viacep.com.br/ws/$cep/json/");
+
+        return $url;
+
+    } catch (Exception $e) {
+        return [
+            'error' => true,
+            'code' => $e->getCode()
+        ];
+    }
+});

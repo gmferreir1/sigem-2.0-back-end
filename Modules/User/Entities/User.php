@@ -23,6 +23,7 @@ class User extends Authenticatable implements Transformable
      * @var array
      */
     protected $fillable = [
+        'id',
         'name',
         'last_name',
         'email',
@@ -46,6 +47,11 @@ class User extends Authenticatable implements Transformable
         $this->attributes['type_profile'] = trim(removeAccents(strtolower($value)));
     }
 
+   /* *****************************
+    * ********** Atenção **********
+    * **** Remover na migração ****
+    * *****************************
+    */
     public function setPasswordAttribute($value)
     {
         if ($value) {

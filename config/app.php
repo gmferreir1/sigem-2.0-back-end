@@ -65,7 +65,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'America/Sao_Paulo',
 
     /*
     |--------------------------------------------------------------------------
@@ -156,6 +156,11 @@ return [
          * Prettus
          */
         Prettus\Repository\Providers\RepositoryServiceProvider::class,
+
+        /*
+         * Laravel Snappy
+         */
+        Barryvdh\Snappy\ServiceProvider::class,
 
         /*
          * Application Service Providers...

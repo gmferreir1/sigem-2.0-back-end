@@ -23,6 +23,7 @@ class DestinationOrReason extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'id',
         'type',
         'text',
         'rp_last_action'

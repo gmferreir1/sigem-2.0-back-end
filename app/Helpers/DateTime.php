@@ -67,3 +67,13 @@ function dayToMonth($time){
         ($months>0?$months.' mes'.($months>1?'es ':' '):'') . ' e '.
         ($days>0?$days.' dia' .($days>1?'s ':' '):'');
 }
+
+/**
+ * @param $date
+ * @return false|string
+ */
+function formatDate($date) {
+    if ($date) {
+        return date('d/m/Y', strtotime($date));
+    }
+}

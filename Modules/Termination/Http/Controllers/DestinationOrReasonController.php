@@ -5,6 +5,7 @@ namespace Modules\Termination\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Modules\Termination\Services\ContractServiceCrud;
 use Modules\Termination\Services\DestinationOrReasonService;
 use Modules\Termination\Services\DestinationOrReasonServiceCrud;
 
@@ -19,11 +20,16 @@ class DestinationOrReasonController extends Controller
      * @var DestinationOrReasonServiceCrud
      */
     protected $serviceCrud;
+    /**
+     * @var ContractServiceCrud
+     */
+    private $contractServiceCrud;
 
-    public function __construct(DestinationOrReasonService $service, DestinationOrReasonServiceCrud $serviceCrud)
+    public function __construct(DestinationOrReasonService $service, DestinationOrReasonServiceCrud $serviceCrud, ContractServiceCrud $contractServiceCrud)
     {
         $this->service = $service;
         $this->serviceCrud = $serviceCrud;
+        $this->contractServiceCrud = $contractServiceCrud;
     }
 
     /**
@@ -75,5 +81,33 @@ class DestinationOrReasonController extends Controller
         };
 
         return $this->serviceCrud->scopeQuery($closure);
+    }
+
+    /**
+     * Remove motivo ou destino
+     * @param $id
+     * @return mixed
+     */
+    public function remove($id)
+    {
+        // antes de remover verifica se esta sendo usado em alguma inativação de contrato
+        $closure = function ($query) use ($id) {
+            return $query->where('destination_id', $id)
+                ->orWhere(function ($query) use ($id) {
+                    $query->where('reason_id', $id);
+                });
+        };
+
+        $checkInUse = $this->contractServiceCrud->scopeQuery($closure);
+        if ($checkInUse->count()) {
+            $message[] = "Em uso no sistema, não permitido remover";
+            return response($message, 422);
+        }
+
+        $this->serviceCrud->delete($id);
+
+        return [
+            'success' => true
+        ];
     }
 }

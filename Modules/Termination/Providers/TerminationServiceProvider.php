@@ -4,8 +4,16 @@ namespace Modules\Termination\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Termination\Repositories\ContractRepository;
+use Modules\Termination\Repositories\ContractRepositoryEloquent;
 use Modules\Termination\Repositories\DestinationOrReasonRepository;
 use Modules\Termination\Repositories\DestinationOrReasonRepositoryEloquent;
+use Modules\Termination\Repositories\HistoricRepository;
+use Modules\Termination\Repositories\HistoricRepositoryEloquent;
+use Modules\Termination\Repositories\RentAccessoryRepository;
+use Modules\Termination\Repositories\RentAccessoryRepositoryEloquent;
+use Modules\Termination\Repositories\ScoreRepository;
+use Modules\Termination\Repositories\ScoreRepositoryEloquent;
 
 class TerminationServiceProvider extends ServiceProvider
 {
@@ -38,6 +46,10 @@ class TerminationServiceProvider extends ServiceProvider
     public function register()
     {
         $this->app->bind(DestinationOrReasonRepository::class, DestinationOrReasonRepositoryEloquent::class);
+        $this->app->bind(ContractRepository::class, ContractRepositoryEloquent::class);
+        $this->app->bind(HistoricRepository::class, HistoricRepositoryEloquent::class);
+        $this->app->bind(RentAccessoryRepository::class, RentAccessoryRepositoryEloquent::class);
+        $this->app->bind(ScoreRepository::class, ScoreRepositoryEloquent::class);
     }
 
     /**

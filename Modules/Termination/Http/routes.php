@@ -7,11 +7,39 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'termination', 'namespac
 {
 
     /****
+     * Route::termination/score
+     * Score de atendimento
+     */
+    Route::group(['prefix' => 'score'], function () {
+        Route::get('', 'ScoreController@all');
+        Route::post('', 'ScoreController@create');
+        Route::put('{id}', 'ScoreController@update');
+        Route::delete('{id}', 'ScoreController@delete');
+        Route::get('get-next-attendance', 'ScoreController@getNextAttendance');
+    });
+
+
+    /****
      * Route::termination/contract
      * Modulo contrato
      */
     Route::group(['prefix' => 'contract'], function () {
+        Route::post('', 'ContractController@create');
+        Route::put('{id}', 'ContractController@update');
+        Route::get('get-all-responsible', 'ContractController@getAllResponsible');
+        Route::get('{id}', 'ContractController@find');
+        Route::get('{queryParams?}', 'ContractController@all');
+        Route::get('{contract_id}/historic', 'ContractController@getHistoric');
+    });
 
+
+    /****
+     * Route::termination/rent-accessory
+     * Acessorios da locação
+     */
+    Route::group(['prefix' => 'rent-accessory'], function () {
+        Route::get('{termination_id}', 'RentAccessoryController@find');
+        Route::put('{id}', 'RentAccessoryController@update');
     });
 
 
@@ -22,6 +50,7 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'termination', 'namespac
         Route::post('', 'DestinationOrReasonController@create');
         Route::get('', 'DestinationOrReasonController@all');
         Route::put('{id}', 'DestinationOrReasonController@update');
+        Route::delete('{id}', 'DestinationOrReasonController@remove');
     });
 
 
@@ -31,7 +60,9 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'termination', 'namespac
      * Consultas diversas
      */
     Route::group(['prefix' => 'query'], function () {
-
+        Route::get('contract-already-release/{contract}', 'ContractController@checkContractAlreadyRelease');
+        Route::get('guarantors/{queryParams?}', 'ContractController@getGuarantorsContract');
+        Route::get('last-attendances', 'ContractController@getLastAttendances');
     });
 
 });

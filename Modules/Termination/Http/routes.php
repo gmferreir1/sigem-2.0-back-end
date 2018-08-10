@@ -34,6 +34,17 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'termination', 'namespac
 
 
     /****
+     * Route::termination/end-contract-in-lot
+     * Baixa de contrato em lote
+     */
+    Route::group(['prefix' => 'end-contract-in-lot'], function () {
+        Route::get('search-termination/{queryParams?}', 'ContractController@getContractPending');
+        Route::put('', 'ContractController@endContractsLot');
+    });
+
+
+
+    /****
      * Route::termination/rent-accessory
      * Acessorios da locação
      */

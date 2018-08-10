@@ -279,6 +279,65 @@ class ContractController extends Controller
     }
 
     /**
+     * Faz a busca pelo contrato para a baixa em lote
+     * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function getContractPending(Request $request)
+    {
+        $queryParams = [
+            'contract' => $request->get('contract')
+        ];
+
+        $results = $this->serviceCrud->findWhere(['contract' => $queryParams['contract'], 'status' => 'p']);
+
+        if (count($results)) {
+            return $results[0];
+        }
+
+        $message[] = "Nenhum contrato localizado para esta ação";
+        return response($message, 422);
+    }
+
+    /**
+     * Baixa os contratos em lote
+     * @param Request $request
+     * @return array
+     * @throws \Exception
+     */
+    public function endContractsLot(Request $request)
+    {
+        $dataToUpdate = $request->all();
+        $error = 0;
+
+        if (!count($dataToUpdate)) {
+            $message[] = "Nenhum contrato selecionado";
+            return response($message, 422);
+        }
+
+        foreach ($dataToUpdate as $item) {
+
+            if ($item['status'] && $item['end_process']) {
+                $data = [
+                    'status' => $item['status'],
+                    'end_process' => $item['end_process']
+                ];
+
+                $dataUpdated = $this->serviceCrud->update($data, $item['id'], false);
+
+                if (!isset($dataUpdated->id)) {
+                    $error = $error + 1;
+                }
+            }
+        }
+
+        return [
+            'success' => true,
+            'has_error' => $error
+        ];
+    }
+
+    /**
      * Retorna o ultimo e o penultimo atendimento
      */
     public function getLastAttendances()

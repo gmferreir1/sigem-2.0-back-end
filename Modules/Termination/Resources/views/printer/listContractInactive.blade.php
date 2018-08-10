@@ -82,7 +82,7 @@
     <table class="table">
         <thead>
         <tr style="font-size: 10px; background-color: #E98531">
-            <th class="text-center" style="width: 50px">Contrato</th>
+            <th class="text-center" style="width: 75px">Contrato</th>
             <th class="text-center" style="width: 40px;">Tp</th>
             <th class="text-left" style="width: 300px;">Endereço</th>
             <th class="text-left" style="width: 250px;">

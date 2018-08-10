@@ -32,6 +32,7 @@ class ContractListPrinterTransformer extends TransformerAbstract
             'immobile_type' => $model->immobile_type,
             'type_location' => $model->type_location,
             'tenant' => $model->tenant,
+            'tenant' => $model->tenant,
             'owner' => $model->owner,
             'type_register' => $model->type_register,
             'termination_date' => $model->termination_date,

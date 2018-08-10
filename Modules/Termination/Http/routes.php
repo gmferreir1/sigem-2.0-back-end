@@ -65,4 +65,13 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'termination', 'namespac
         Route::get('last-attendances', 'ContractController@getLastAttendances');
     });
 
+
+    /****
+     * Route::termination/record
+     * Impressão de fichas
+     */
+    Route::group(['prefix' => 'record'], function () {
+        Route::get('{queryParams?}', 'RecordPrinterController@printerRecord');
+    });
+
 });

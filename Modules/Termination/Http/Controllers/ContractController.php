@@ -2,6 +2,7 @@
 
 namespace Modules\Termination\Http\Controllers;
 
+use App\Traits\Generic\Printer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -11,12 +12,12 @@ use Modules\Termination\Services\ContractReportService;
 use Modules\Termination\Services\ContractService;
 use Modules\Termination\Services\ContractServiceCrud;
 use Modules\Termination\Services\HistoricServiceCrud;
-use Modules\Termination\Services\PrintService;
 use Modules\Termination\Services\RentAccessoryServiceCrud;
 use Modules\Termination\Services\ScoreService;
 
 class ContractController extends Controller
 {
+    use Printer;
 
     /**
      * @var ContractServiceCrud
@@ -43,17 +44,13 @@ class ContractController extends Controller
      */
     private $scoreService;
     /**
-     * @var PrintService
-     */
-    private $printService;
-    /**
      * @var ContractReportService
      */
     private $contractReportService;
 
 
     public function __construct(ContractServiceCrud $serviceCrud, ContractService $service, RentAccessoryServiceCrud $rentAccessoryServiceCrud
-                                , QueryService $queryService, HistoricServiceCrud $historicServiceCrud, ScoreService $scoreService, PrintService $printService
+                                , QueryService $queryService, HistoricServiceCrud $historicServiceCrud, ScoreService $scoreService
                                 , ContractReportService $contractReportService)
     {
         $this->serviceCrud = $serviceCrud;
@@ -62,7 +59,6 @@ class ContractController extends Controller
         $this->queryService = $queryService;
         $this->historicServiceCrud = $historicServiceCrud;
         $this->scoreService = $scoreService;
-        $this->printService = $printService;
         $this->contractReportService = $contractReportService;
     }
 
@@ -206,7 +202,7 @@ class ContractController extends Controller
         $results['extra_data']['period'] = (!$queryParams['init_date'] || !$queryParams['end_date']) ? 'GERAL' : $queryParams['init_date'] . ' a ' . $queryParams['end_date'];
         $results['extra_data']['type_record'] = $queryParams['type_printer'];
 
-        return $this->printService->callPrinter($results, 'termination::printer.listContractInactive', 'landscape');
+        return $this->printer($results, 'termination::printer.listContractInactive', 'landscape');
     }
 
 

@@ -31,3 +31,19 @@ Route::get('query-cep/{cep}', function ($cep) {
         ];
     }
 });
+
+
+/**
+ * Deleta um arquivo na pasta public
+ */
+Route::get('/remove-file/{params?}', function () {
+
+    $params = [
+        'file_name' => Request()->get('file_name')
+    ];
+
+    umask(0);
+
+    unlink(public_path($params['file_name']));
+
+});

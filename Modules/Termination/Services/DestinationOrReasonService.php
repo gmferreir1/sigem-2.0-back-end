@@ -53,4 +53,14 @@ class DestinationOrReasonService
             return response($message, 422);
         }
     }
+
+    public function getDestinationOrReasonNameById($id)
+    {
+        if ($id) {
+            $destinationOrNameData = $this->serviceCrud->find($id);
+            return $destinationOrNameData->text;
+        }
+
+        return null;
+    }
 }

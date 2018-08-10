@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\Termination\Services;
+namespace App\Traits\Generic;
 
 use Illuminate\Support\Facades\Auth;
 
-class PrintService
+trait Printer
 {
     /**
      * @var
@@ -21,7 +21,7 @@ class PrintService
      */
     private $orientation;
 
-    public function callPrinter(array $data, string $viewName, string $orientation = 'portrait')
+    public function printer(array $data, string $viewName, string $orientation = 'portrait')
     {
         $this->data = $data;
         $this->viewName = $viewName;
@@ -52,4 +52,5 @@ class PrintService
 
         return ['file_name' => $fileName];
     }
+
 }

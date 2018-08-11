@@ -1,0 +1,16 @@
+{
+    "name": "DeadFile",
+    "alias": "deadfile",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\DeadFile\\Providers\\DeadFileServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}

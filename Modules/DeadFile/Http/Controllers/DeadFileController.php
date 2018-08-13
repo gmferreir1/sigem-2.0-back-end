@@ -2,6 +2,7 @@
 
 namespace Modules\DeadFile\Http\Controllers;
 
+use App\Traits\Generic\Printer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -12,6 +13,9 @@ use Modules\Termination\Services\ContractServiceCrud;
 
 class DeadFileController extends Controller
 {
+
+    use Printer;
+
     /**
      * @var DeadFileServiceCrud
      */
@@ -40,7 +44,8 @@ class DeadFileController extends Controller
     {
         $queryParams = [
             'type_release' => !$request->get('type_release') ? array('rent') : $request->get('type_release'),
-            'year_release' => !$request->get('year_release') ? array(date('Y')) : $request->get('year_release')
+            'year_release' => !$request->get('year_release') ? array(date('Y')) : $request->get('year_release'),
+            'printer' => $request->get('printer') == 'false' ? false : true
         ];
 
         $closure = function ($query) use ($queryParams) {
@@ -49,7 +54,20 @@ class DeadFileController extends Controller
                         ->orderBy('id', 'DESC');
         };
 
-        return $this->serviceCrud->scopeQuery($closure, false, 0, DeadFilePresenter::class);
+        $results = $this->serviceCrud->scopeQuery($closure, false, 0, DeadFilePresenter::class);
+
+        if ($queryParams['printer']) {
+
+            $results['filter_data'] = [
+                'type_release' => count($queryParams['type_release']) == 1 ? ($queryParams['type_release'][0] == 'rent' ? 'Aluguel' : 'Justice') : 'Todos',
+                'year_release' => count($queryParams['year_release']) == 1 ? $queryParams['year_release'][0] : 'Multiplos',
+            ];
+
+
+            return $this->printer($results, 'deadfile::printer.listDeadFile', 'landscape');
+        }
+
+        return $results;
     }
 
     public function getYearsAvailable ()

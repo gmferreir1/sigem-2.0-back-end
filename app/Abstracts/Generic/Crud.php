@@ -18,7 +18,7 @@ abstract class Crud implements ICrud
 
                     $this->validator->with($data)->passesOrFail(ValidatorInterface::RULE_CREATE);
 
-                    return $this->repository->create($data);
+                    return $this->repository->skipPresenter(true)->create($data);
 
                 } catch (ValidatorException $e) {
 

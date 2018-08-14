@@ -36,6 +36,8 @@ class ContractListTransformer extends TransformerAbstract
             'end_process' => $model->end_process,
             'duration_process' => $this->getTimeEndProcess($model),
             'destination_name' => $this->getDestination($model),
+            'archive' => $model->archive,
+            'release_immobile' => $model->release_immobile,
             'created_at' => date('Y-m-d H:i:s', strtotime($model->created_at)),
             'updated_at' => date('Y-m-d H:i:s', strtotime($model->updated_at))
         ];

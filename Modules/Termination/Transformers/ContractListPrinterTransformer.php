@@ -32,7 +32,6 @@ class ContractListPrinterTransformer extends TransformerAbstract
             'immobile_type' => $model->immobile_type,
             'type_location' => $model->type_location,
             'tenant' => $model->tenant,
-            'tenant' => $model->tenant,
             'owner' => $model->owner,
             'type_register' => $model->type_register,
             'termination_date' => $model->termination_date,
@@ -66,7 +65,7 @@ class ContractListPrinterTransformer extends TransformerAbstract
 
     private function getReasonName($model): string
     {
-        if ($model->reason_id) {
+        if ($model && isset($model->reason_id)) {
             return $model->getReasonData->text;
         }
 
@@ -75,7 +74,7 @@ class ContractListPrinterTransformer extends TransformerAbstract
 
     private function getDestinationName($model): string
     {
-        if ($model->destination_id) {
+        if (isset($model->destination_id)) {
             return $model->getDestinationData->text;
         }
 

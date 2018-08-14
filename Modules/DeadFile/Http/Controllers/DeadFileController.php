@@ -38,6 +38,27 @@ class DeadFileController extends Controller
 
     /**
      * @param Request $request
+     * @return array|\Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
+     */
+    public function save(Request $request)
+    {
+        $dataToCreate = $request->all();
+
+        return $this->deadFileService->archiveProcess($dataToCreate['termination_id'], $dataToCreate['contract']);
+    }
+
+    public function checkIsArchived(Request $request)
+    {
+        $queryParams = [
+            'termination_id' => $request->get('termination_id'),
+            'contract' => toLowerCase($request->get('contract'))
+        ];
+
+        return $this->deadFileService->checkProcessIsArchived($queryParams['termination_id'], $queryParams['contract']);
+    }
+
+    /**
+     * @param Request $request
      * @return mixed
      */
     public function all(Request $request)

@@ -41,6 +41,10 @@ class ImmobileRelease extends Model implements Transformable
         'rp_last_action'
     ];
 
+    public function setImmobileCodeAttribute($value)
+    {
+        $this->attributes['immobile_code'] = toLowerCase(removeAccents(trim($value)));
+    }
 
     public function setDateSendAttribute($value)
     {

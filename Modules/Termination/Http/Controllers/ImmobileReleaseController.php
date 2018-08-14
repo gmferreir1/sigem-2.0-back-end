@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Modules\Termination\Presenters\ImmobileReleasePresenter;
+use Modules\Termination\Services\ContractServiceCrud;
 use Modules\Termination\Services\ImmobileReleaseService;
 use Modules\Termination\Services\ImmobileReleaseServiceCrud;
 
@@ -22,13 +23,17 @@ class ImmobileReleaseController extends Controller
      * @var ImmobileReleaseService
      */
     private $service;
+    /**
+     * @var ContractServiceCrud
+     */
+    private $contractServiceCrud;
 
-    public function __construct(ImmobileReleaseServiceCrud $serviceCrud, ImmobileReleaseService $service)
+    public function __construct(ImmobileReleaseServiceCrud $serviceCrud, ImmobileReleaseService $service, ContractServiceCrud $contractServiceCrud)
     {
         $this->serviceCrud = $serviceCrud;
         $this->service = $service;
+        $this->contractServiceCrud = $contractServiceCrud;
     }
-
 
     public function all(Request $request)
     {
@@ -69,6 +74,45 @@ class ImmobileReleaseController extends Controller
 
     /**
      * @param Request $request
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function save(Request $request)
+    {
+        $data = $request->all();
+
+        // verifica se ja nao esta lançado
+        if ($this->checkImmobileIsRelease($data['termination_id'])) {
+            $message[] = "Imóvel já liberado no sistema";
+            return response($message, 422);
+        }
+
+
+        $terminationData = $this->contractServiceCrud->find($data['termination_id']);
+        $dataUser = Auth::user();
+
+        $dataToSave = [
+            'immobile_code' => $terminationData->immobile_code,
+            'inactivate_date' => $terminationData->termination_date,
+            'rp_receive' => $data['rp_receive'],
+            'date_send' => $data['date_send'],
+            'termination_id' => $data['termination_id'],
+            'rp_release' => $dataUser->id,
+            'rp_last_action' => $dataUser->id,
+        ];
+
+        $results = $this->serviceCrud->create($dataToSave, true);
+
+        if (isset($results->id)) {
+            // grava na tabela de inativação de contrato a liberação
+            $this->contractServiceCrud->update(['release_immobile' => true], $terminationData->id, false);
+        }
+
+        return $results;
+    }
+
+    /**
+     * @param Request $request
      * @param $id
      * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed|\Symfony\Component\HttpFoundation\Response
      * @throws \Exception
@@ -79,6 +123,13 @@ class ImmobileReleaseController extends Controller
         $dataToUpdate['rp_last_action'] = Auth::user()->id;
 
         return $this->serviceCrud->update($dataToUpdate, $id);
+    }
+
+    public function checkImmobileIsRelease($terminationId)
+    {
+        $results = $this->serviceCrud->findWhere(['termination_id' => $terminationId], ImmobileReleasePresenter::class)['data'];
+
+        return count($results) ? $results[0] : null;
     }
 
     /**

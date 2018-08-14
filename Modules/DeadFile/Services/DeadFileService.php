@@ -3,6 +3,7 @@
 namespace Modules\DeadFile\Services;
 
 use Illuminate\Support\Facades\Auth;
+use Modules\DeadFile\Presenters\DeadFilePresenter;
 use Modules\Termination\Services\ContractServiceCrud;
 use Modules\User\Services\UserServiceCrud;
 
@@ -64,7 +65,8 @@ class DeadFileService
          */
         $isArchived = $this->checkProcessIsArchived($terminationId, $contract);
         if ($isArchived) {
-            return $isArchived;
+            $messages[] = 'Processo já arquivado no sistema';
+            return response($messages, 422);
         }
 
         /*
@@ -96,7 +98,7 @@ class DeadFileService
      * @param string $contract
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    private function checkProcessIsArchived(int $terminationId, string $contract)
+    public function checkProcessIsArchived(int $terminationId = null, string $contract = null)
     {
         $closure = function ($query) use ($terminationId, $contract) {
             return $query->where('termination_id', $terminationId)
@@ -107,12 +109,9 @@ class DeadFileService
                 });
         };
 
-        $results = $this->serviceCrud->scopeQuery($closure, false);
+        $results = $this->serviceCrud->scopeQuery($closure, false, 0, DeadFilePresenter::class);
 
-        if (count($results)) {
-            $messages[] = 'Processo já arquivado no sistema';
-            return response($messages, 422);
-        }
+        return count($results['data']) ? $results['data'][0] : null;
     }
 
     private function initArchiveProcess(int $terminationId)

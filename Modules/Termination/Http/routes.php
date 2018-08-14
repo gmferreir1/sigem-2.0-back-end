@@ -72,6 +72,8 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'termination', 'namespac
         Route::get('{id}', 'ImmobileReleaseController@find');
         Route::get('{queryParams?}', 'ImmobileReleaseController@all');
         Route::put('{id}', 'ImmobileReleaseController@update');
+        Route::get('check-immobile-is-release/{termination_id}', 'ImmobileReleaseController@checkImmobileIsRelease');
+        Route::post('', 'ImmobileReleaseController@save');
     });
 
 

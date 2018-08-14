@@ -23,7 +23,7 @@ class ImmobileReleaseValidator extends LaravelValidator
             'inactivate_date' => 'required',
             'rp_receive' => 'required',
             'date_send' => 'required',
-            'termination_id' => 'required | unique:immobile_release_terminations',
+            'termination_id' => 'required | unique:termination_immobile_releases',
             'rp_release' => 'required',
             'rp_last_action' => 'required',
         ],

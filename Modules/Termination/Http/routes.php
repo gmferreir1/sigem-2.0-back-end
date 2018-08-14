@@ -43,7 +43,6 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'termination', 'namespac
     });
 
 
-
     /****
      * Route::termination/rent-accessory
      * Acessorios da locação
@@ -64,6 +63,16 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'termination', 'namespac
         Route::delete('{id}', 'DestinationOrReasonController@remove');
     });
 
+
+    /***
+     * Route::termination/immobile-release
+     */
+    Route::group(['prefix' => 'immobile-release'], function () {
+        Route::get('get-all-responsible', 'ImmobileReleaseController@getAllResponsible');
+        Route::get('{id}', 'ImmobileReleaseController@find');
+        Route::get('{queryParams?}', 'ImmobileReleaseController@all');
+        Route::put('{id}', 'ImmobileReleaseController@update');
+    });
 
 
     /****

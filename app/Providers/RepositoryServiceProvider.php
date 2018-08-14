@@ -31,6 +31,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\RentAccessoryRepository::class, \App\Repositories\RentAccessoryRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ScoreRepository::class, \App\Repositories\ScoreRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\DeadFileRepository::class, \App\Repositories\DeadFileRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ImmobileReleaseRepository::class, \App\Repositories\ImmobileReleaseRepositoryEloquent::class);
         //:end-bindings:
     }
 }

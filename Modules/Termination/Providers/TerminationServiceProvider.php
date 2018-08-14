@@ -10,6 +10,8 @@ use Modules\Termination\Repositories\DestinationOrReasonRepository;
 use Modules\Termination\Repositories\DestinationOrReasonRepositoryEloquent;
 use Modules\Termination\Repositories\HistoricRepository;
 use Modules\Termination\Repositories\HistoricRepositoryEloquent;
+use Modules\Termination\Repositories\ImmobileReleaseRepository;
+use Modules\Termination\Repositories\ImmobileReleaseRepositoryEloquent;
 use Modules\Termination\Repositories\RentAccessoryRepository;
 use Modules\Termination\Repositories\RentAccessoryRepositoryEloquent;
 use Modules\Termination\Repositories\ScoreRepository;
@@ -50,6 +52,7 @@ class TerminationServiceProvider extends ServiceProvider
         $this->app->bind(HistoricRepository::class, HistoricRepositoryEloquent::class);
         $this->app->bind(RentAccessoryRepository::class, RentAccessoryRepositoryEloquent::class);
         $this->app->bind(ScoreRepository::class, ScoreRepositoryEloquent::class);
+        $this->app->bind(ImmobileReleaseRepository::class, ImmobileReleaseRepositoryEloquent::class);
     }
 
     /**

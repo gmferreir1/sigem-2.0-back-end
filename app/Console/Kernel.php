@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\MigrateDeadFile;
+use App\Console\Commands\MigrateImmobileReleaseTermination;
 use App\Console\Commands\MigrateTermination;
 use App\Console\Commands\MigrateUser;
 use Illuminate\Console\Scheduling\Schedule;
@@ -18,6 +19,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         MigrateTermination::class,
         MigrateDeadFile::class,
+        MigrateImmobileReleaseTermination::class,
         MigrateUser::class,
     ];
 

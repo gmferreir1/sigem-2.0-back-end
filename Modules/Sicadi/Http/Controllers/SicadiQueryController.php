@@ -35,6 +35,18 @@ class SicadiQueryController extends Controller
             return $this->service->getImmobileDataPerContract($queryParams['value_query'], false);
         }
 
+        if ($queryParams['query_by'] == 'immobile_code') {
+            return $this->service->getImmobileDataPerCode($queryParams['value_query']);
+        }
+
         return [];
+    }
+
+    /**
+     * Retorna os tipos de imoveis disponiveis no sistema
+     */
+    public function getTypesImmobileAvailable()
+    {
+        return $this->service->getTypesImmobileAvailable();
     }
 }

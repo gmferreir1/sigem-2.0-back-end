@@ -11,5 +11,6 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'sicadi', 'namespace' =>
      */
     Route::group(['prefix' => 'query'], function () {
         Route::get('immobile-data/{queryParams?}', 'SicadiQueryController@queryImmobileData');
+        Route::get('types-immobile-available', 'SicadiQueryController@getTypesImmobileAvailable');
     });
 });

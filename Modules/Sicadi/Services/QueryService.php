@@ -5,6 +5,8 @@ namespace Modules\Sicadi\Services;
 
 use Modules\Sicadi\Repositories\ClientContractRepository;
 use Modules\Sicadi\Repositories\ClientRepository;
+use Modules\Sicadi\Repositories\ImmobileRepository;
+use Modules\Sicadi\Repositories\ImmobileTypeRepository;
 use Modules\Sicadi\Repositories\PhoneRepository;
 use Modules\Sicadi\Repositories\ReceiptTenantRepository;
 use Modules\Sicadi\Repositories\TenantAllContractRepository;
@@ -31,15 +33,26 @@ class QueryService
      * @var ClientContractRepository
      */
     private $clientContractRepository;
+    /**
+     * @var ImmobileRepository
+     */
+    private $immobileRepository;
+    /**
+     * @var ImmobileTypeRepository
+     */
+    private $immobileTypeRepository;
 
     public function __construct(TenantAllContractRepository $tenantAllContractRepository, ReceiptTenantRepository $receiptTenantRepository,
-                                PhoneRepository $phoneRepository, ClientRepository $clientRepository, ClientContractRepository $clientContractRepository)
+                                PhoneRepository $phoneRepository, ClientRepository $clientRepository, ClientContractRepository $clientContractRepository,
+                                ImmobileRepository $immobileRepository, ImmobileTypeRepository $immobileTypeRepository)
     {
         $this->tenantAllContractRepository = $tenantAllContractRepository;
         $this->receiptTenantRepository = $receiptTenantRepository;
         $this->phoneRepository = $phoneRepository;
         $this->clientRepository = $clientRepository;
         $this->clientContractRepository = $clientContractRepository;
+        $this->immobileRepository = $immobileRepository;
+        $this->immobileTypeRepository = $immobileTypeRepository;
     }
 
     /**
@@ -119,6 +132,47 @@ class QueryService
         return $data;
     }
 
+    public function getImmobileDataPerCode(string $immobileCode)
+    {
+        $data = $this->immobileRepository->scopeQuery(function ($query) use ($immobileCode) {
+            return $query->where('immobile_code', 'like', '%' . $immobileCode . '%')
+                ->join('clients', 'immobiles.owner_code', '=', 'clients.client_id_sicadi')
+                ->select('immobiles.immobile_code', 'immobiles.address', 'immobiles.neighborhood'
+                    , 'immobiles.city', 'immobiles.state', 'immobiles.zip_code', 'immobiles.value_rent as value'
+                    , 'immobiles.type_immobile', 'immobiles.type_occupation as type_location', 'immobiles.iptu', 'immobiles.type_immobile_id'
+                    , 'clients.client_id_sicadi as client_id', 'clients.client_name as owner', 'clients.email as owner_email');
+        })->all();
+
+        if ($data->count()) {
+
+            foreach ($data as $key => $item) {
+
+                /*
+                 * Valor
+                 */
+                $data[$key]['value'] = (float)$item['value'];
+
+                /*
+                 * Tipo de locação
+                 */
+                $item['type_location'] = $item['type_location'] ? ($item['type_location'] == 're' ? 'r' : 'c') : null;
+
+                /*
+                 * Pega os telefones
+                 */
+                $phones = $this->getClientPhones($item['client_id']);
+
+                $data[$key]['owner_phone_residential'] = $phones['residential'];
+                $data[$key]['phone_commercial'] = $phones['commercial'];
+                $data[$key]['owner_cell_phone'] = $phones['cell_phone'];
+            }
+
+            return $data;
+        }
+
+        return [];
+    }
+
 
     /**
      * Dados dos fiadores
@@ -166,6 +220,19 @@ class QueryService
         }
 
         return $data;
+    }
+
+    /**
+     * Retorna os tipos de imóveis disponiveis
+     */
+    public function getTypesImmobileAvailable()
+    {
+        $closure = function ($query) {
+            return $query->select('type_immobile_id as id', 'name_type_immobile as name')
+                ->orderBy('name_type_immobile', 'ASC');
+        };
+
+        return $this->immobileTypeRepository->scopeQuery($closure)->all();
     }
 
 

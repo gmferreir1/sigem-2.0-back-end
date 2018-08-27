@@ -83,4 +83,23 @@ class ScoreController extends Controller
             'success' => true
         ];
     }
+
+    /**
+     * Retorna o ultimo atendente
+     * @return null
+     */
+    public function getNextAttendance()
+    {
+        $closure = function ($query) {
+            return $query->orderBy('score', 'ASC');
+        };
+
+        $results = $this->serviceCrud->scopeQuery($closure);
+
+        if ($results->count()) {
+            return $results[0]['attendant_id'];
+        }
+
+        return null;
+    }
 }

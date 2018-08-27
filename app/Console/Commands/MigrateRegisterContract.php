@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Modules\Register\Entities\ReserveContract\ReserveContract;
+use Modules\Register\Entities\ReserveHistoric\ReserveHistoric;
+use Modules\Register\Entities\ReserveReasonCancel\ReserveReasonCancel;
 use Modules\Register\Entities\ScoreAttendance\ScoreAttendance;
 
 class MigrateRegisterContract extends Command
@@ -45,8 +47,8 @@ class MigrateRegisterContract extends Command
          */
         $this->info('Iniciando Migração da tabela register_reserve_monitorings');
         ReserveContract::truncate();
-        $destinationOrReason = DB::connection('sigem-to-migrate')->table('register_reserve_monitorings')->select('*')->get();
-        foreach ($destinationOrReason as $item) {
+        $dataToMigrate = DB::connection('sigem-to-migrate')->table('register_reserve_monitorings')->select('*')->get();
+        foreach ($dataToMigrate as $item) {
             ReserveContract::create(get_object_vars($item));
         }
         $this->info('Finalizando Migração da tabela register_reserve_monitorings');
@@ -57,10 +59,34 @@ class MigrateRegisterContract extends Command
          */
         $this->info('Iniciando Migração da tabela register_reserve_score_attendants');
         ScoreAttendance::truncate();
-        $destinationOrReason = DB::connection('sigem-to-migrate')->table('register_reserve_score_attendants')->select('*')->get();
-        foreach ($destinationOrReason as $item) {
+        $dataToMigrate = DB::connection('sigem-to-migrate')->table('register_reserve_score_attendants')->select('*')->get();
+        foreach ($dataToMigrate as $item) {
             ScoreAttendance::create(get_object_vars($item));
         }
         $this->info('Finalizando Migração da tabela register_reserve_score_attendants');
+
+
+        /**
+         * Migração da tabela register_reserve_historics
+         */
+        $this->info('Iniciando Migração da tabela register_reserve_historics');
+        ReserveHistoric::truncate();
+        $dataToMigrate = DB::connection('sigem-to-migrate')->table('register_reserve_historics')->select('*')->get();
+        foreach ($dataToMigrate as $item) {
+            ReserveHistoric::create(get_object_vars($item));
+        }
+        $this->info('Finalizando Migração da tabela register_reserve_historics');
+
+
+        /**
+         * Migração da tabela register_reserve_reason_cancels
+         */
+        $this->info('Iniciando Migração da tabela register_reserve_reason_cancels');
+        ReserveReasonCancel::truncate();
+        $dataToMigrate = DB::connection('sigem-to-migrate')->table('register_reserve_reason_cancels')->select('*')->get();
+        foreach ($dataToMigrate as $item) {
+            ReserveReasonCancel::create(get_object_vars($item));
+        }
+        $this->info('Finalizando Migração da tabela register_reserve_reason_cancels');
     }
 }

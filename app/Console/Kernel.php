@@ -3,6 +3,7 @@
 namespace App\Console;
 
 use App\Console\Commands\MigrateDeadFile;
+use App\Console\Commands\MigrateFinancialContractCelebrated;
 use App\Console\Commands\MigrateImmobileReleaseTermination;
 use App\Console\Commands\MigrateRegisterContract;
 use App\Console\Commands\MigrateTermination;
@@ -22,6 +23,7 @@ class Kernel extends ConsoleKernel
         MigrateDeadFile::class,
         MigrateImmobileReleaseTermination::class,
         MigrateRegisterContract::class,
+        MigrateFinancialContractCelebrated::class,
         MigrateUser::class,
     ];
 

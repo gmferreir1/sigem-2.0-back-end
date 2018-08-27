@@ -16,6 +16,7 @@
         "laravel/tinker": "^1.0",
         "league/fractal": "^0.17.0",
         "nwidart/laravel-modules": "^3.3",
+        "phpmailer/phpmailer": "^6.0",
         "phpoffice/phpword": "^0.15.0",
         "prettus/l5-repository": "^2.6",
         "pusher/pusher-php-server": "~3.0"
@@ -40,7 +41,8 @@
           "app/Helpers/String.php",
           "app/Helpers/Masks.php",
           "app/Helpers/DateTime.php",
-          "app/Helpers/Number.php"
+          "app/Helpers/Number.php",
+          "Modules/Register/Helpers/Helpers.php"
         ]
     },
     "autoload-dev": {

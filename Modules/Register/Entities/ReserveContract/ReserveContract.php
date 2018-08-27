@@ -3,6 +3,8 @@
 namespace Modules\Register\Entities\ReserveContract;
 
 use Illuminate\Database\Eloquent\Model;
+use Modules\Register\Entities\ReserveReasonCancel\ReserveReasonCancel;
+use Modules\User\Entities\User;
 use Prettus\Repository\Contracts\Transformable;
 use Prettus\Repository\Traits\TransformableTrait;
 
@@ -187,4 +189,28 @@ class ReserveContract extends Model implements Transformable
         return (float) $value;
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function getAttendantRegisterData()
+    {
+        return $this->hasOne(User::class, 'id', 'attendant_register_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function getAttendantReceptionData()
+    {
+        return $this->hasOne(User::class, 'id', 'attendant_reception_id');
+    }
+
+    /**
+     * Retorna o motivo do cancelamento
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function getReasonCancelData()
+    {
+        return $this->hasOne(ReserveReasonCancel::class, 'id', 'id_reason_cancel');
+    }
 }

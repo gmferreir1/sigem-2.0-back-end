@@ -173,6 +173,32 @@ class QueryService
         return [];
     }
 
+    /**
+     * Retorna os dados de um imovel pelo código
+     * @param string $immobileCode
+     * @return array|mixed
+     */
+    public function getImmobileData(string $immobileCode)
+    {
+        $data = $this->immobileRepository->scopeQuery(function ($query) use ($immobileCode) {
+            return $query->where('immobile_code', $immobileCode)
+                ->join('clients', 'immobiles.owner_code', '=', 'clients.client_id_sicadi')
+                ->select('immobiles.immobile_code', 'immobiles.address', 'immobiles.neighborhood'
+                    , 'immobiles.city', 'immobiles.state', 'immobiles.zip_code', 'immobiles.value_rent as value'
+                    , 'immobiles.type_immobile', 'immobiles.type_occupation as type_location', 'immobiles.iptu', 'immobiles.type_immobile_id'
+                    , 'clients.client_id_sicadi as client_id', 'clients.client_name as owner', 'clients.email as owner_email');
+        })->all();
+
+        if ($data->count()) {
+
+            $data[0]['value'] = (float) $data[0]['value'];
+
+            return $data[0];
+        }
+
+        return [];
+    }
+
 
     /**
      * Dados dos fiadores

@@ -24,10 +24,10 @@ class Mailer
      * @param array $configAttachment
      * @return $this
      */
-    public function config(string $mailFrom = null, string $nameFrom, string $mailTo, string $nameTo, string $subject, array $bodyData, $configAttachment = [])
+    public function config(string $mailTo, string $nameTo, string $subject, array $bodyData, string $nameFrom = null, string $mailFrom = null, $configAttachment = [])
     {
-        $this->mailFrom = !$mailFrom ? 'informatica@masterimoveis.com.br' : $mailFrom;
-        $this->nameFrom = $nameFrom;
+        $this->mailFrom = !$mailFrom ? 'sigem@masterimoveis.com.br' : $mailFrom;
+        $this->nameFrom = !$nameFrom ? 'Sistema de Gestão Master RSM Imóveis' : $nameFrom;
         $this->mailTo = $mailTo;
         $this->nameTo = $nameTo;
         $this->subject = $subject;

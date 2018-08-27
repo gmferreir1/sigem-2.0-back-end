@@ -3,6 +3,8 @@
 namespace Modules\User\Services;
 
 
+use Illuminate\Support\Facades\Auth;
+
 class UserService
 {
     /**
@@ -15,9 +17,11 @@ class UserService
         $this->serviceCrud = $serviceCrud;
     }
 
-    public function getNameById(int $id)
+    public function getNameById(int $id = null)
     {
-        $userData = $this->serviceCrud->find($id);
+        $idUSer = !$id ? Auth::user()->id : $id;
+
+        $userData = $this->serviceCrud->find($idUSer);
 
         return "$userData->name $userData->last_name";
     }

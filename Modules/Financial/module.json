@@ -1,0 +1,16 @@
+{
+    "name": "Financial",
+    "alias": "financial",
+    "description": "",
+    "keywords": [],
+    "active": 1,
+    "order": 0,
+    "providers": [
+        "Modules\\Financial\\Providers\\FinancialServiceProvider"
+    ],
+    "aliases": {},
+    "files": [
+        "start.php"
+    ],
+    "requires": []
+}

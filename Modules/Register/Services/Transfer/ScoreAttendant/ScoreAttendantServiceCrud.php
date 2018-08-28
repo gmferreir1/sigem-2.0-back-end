@@ -4,7 +4,7 @@ namespace Modules\Register\Services\Transfer\ScoreAttendant;
 
 
 use App\Abstracts\Generic\Crud;
-use Modules\Regisrer\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepository;
+use Modules\Register\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepository;
 use Modules\Register\Validators\Transfer\ScoreAttendantValidator;
 
 class ScoreAttendantServiceCrud extends Crud

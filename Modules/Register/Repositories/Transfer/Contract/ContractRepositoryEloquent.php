@@ -1,17 +1,17 @@
 <?php
 
-namespace Modules\Register\Repositories\Transfer\ScoreAttendant;
+namespace Modules\Register\Repositories\Transfer\Contract;
 
-use Modules\Register\Entities\Transfer\ScoreAttendant\ScoreAttendant;
+use Modules\Register\Entities\Contract\Contract;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 
 /**
- * Class ScoreAttendantRepositoryEloquent.
+ * Class ContractRepositoryEloquent.
  *
  * @package namespace App\Repositories;
  */
-class ScoreAttendantRepositoryEloquent extends BaseRepository implements ScoreAttendantRepository
+class ContractRepositoryEloquent extends BaseRepository implements ContractRepository
 {
     /**
      * Specify Model class name
@@ -20,7 +20,7 @@ class ScoreAttendantRepositoryEloquent extends BaseRepository implements ScoreAt
      */
     public function model()
     {
-        return ScoreAttendant::class;
+        return Contract::class;
     }
 
 

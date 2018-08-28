@@ -4,8 +4,10 @@ namespace Modules\Register\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
-use Modules\Regisrer\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepository;
-use Modules\Regisrer\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepositoryEloquent;
+use Modules\Register\Repositories\Transfer\Contract\ContractRepository;
+use Modules\Register\Repositories\Transfer\Contract\ContractRepositoryEloquent;
+use Modules\Register\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepository;
+use Modules\Register\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepositoryEloquent;
 use Modules\Register\Repositories\ReserveContract\ReserveContractRepository;
 use Modules\Register\Repositories\ReserveContract\ReserveContractRepositoryEloquent;
 use Modules\Register\Repositories\ReserveHistoric\ReserveHistoricRepository;
@@ -14,6 +16,8 @@ use Modules\Register\Repositories\ReserveReasonCancel\ReserveReasonCancelReposit
 use Modules\Register\Repositories\ReserveReasonCancel\ReserveReasonCancelRepositoryEloquent;
 use Modules\Register\Repositories\ScoreAttendances\ScoreAttendanceRepository;
 use Modules\Register\Repositories\ScoreAttendances\ScoreAttendanceRepositoryEloquent;
+use Modules\Register\Repositories\Transfer\Reason\ReasonRepository;
+use Modules\Register\Repositories\Transfer\Reason\ReasonRepositoryEloquent;
 
 class RegisterServiceProvider extends ServiceProvider
 {
@@ -50,6 +54,8 @@ class RegisterServiceProvider extends ServiceProvider
         $this->app->bind(ReserveHistoricRepository::class, ReserveHistoricRepositoryEloquent::class);
         $this->app->bind(ReserveReasonCancelRepository::class, ReserveReasonCancelRepositoryEloquent::class);
         $this->app->bind(ScoreAttendantRepository::class, ScoreAttendantRepositoryEloquent::class);
+        $this->app->bind(ReasonRepository::class, ReasonRepositoryEloquent::class);
+        $this->app->bind(ContractRepository::class, ContractRepositoryEloquent::class);
     }
 
     /**

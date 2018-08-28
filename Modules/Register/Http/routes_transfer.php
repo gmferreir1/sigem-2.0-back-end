@@ -20,4 +20,17 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'register/transfer', 'na
         Route::put('{id}', 'TransferScoreAttendantController@update');
         Route::delete('{id}', 'TransferScoreAttendantController@delete');
     });
+
+
+    /* ****
+    * Rota motivos de transferencia
+    *
+    * Route::register/transfer/reason
+    */
+    Route::group(['prefix' => 'reason'], function () {
+        Route::post('', 'TransferReasonController@save');
+        Route::get('', 'TransferReasonController@all');
+        Route::put('{id}', 'TransferReasonController@update');
+        Route::delete('{id}', 'TransferReasonController@delete');
+    });
 });

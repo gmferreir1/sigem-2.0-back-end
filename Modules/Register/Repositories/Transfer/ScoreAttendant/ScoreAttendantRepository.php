@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Regisrer\Repositories\Transfer\ScoreAttendant;
+namespace Modules\Register\Repositories\Transfer\ScoreAttendant;
 
 use Prettus\Repository\Contracts\RepositoryInterface;
 

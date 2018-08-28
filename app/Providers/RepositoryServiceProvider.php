@@ -38,6 +38,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\HistoricRepository::class, \App\Repositories\HistoricRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ContractCelebratedRepository::class, \App\Repositories\ContractCelebratedRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ReserveReasonCancelRepository::class, \App\Repositories\ReserveReasonCancelRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ScoreAttendantRepository::class, \App\Repositories\ScoreAttendantRepositoryEloquent::class);
         //:end-bindings:
     }
 }

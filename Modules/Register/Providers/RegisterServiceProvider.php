@@ -4,6 +4,8 @@ namespace Modules\Register\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Regisrer\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepository;
+use Modules\Regisrer\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepositoryEloquent;
 use Modules\Register\Repositories\ReserveContract\ReserveContractRepository;
 use Modules\Register\Repositories\ReserveContract\ReserveContractRepositoryEloquent;
 use Modules\Register\Repositories\ReserveHistoric\ReserveHistoricRepository;
@@ -47,6 +49,7 @@ class RegisterServiceProvider extends ServiceProvider
         $this->app->bind(ScoreAttendanceRepository::class, ScoreAttendanceRepositoryEloquent::class);
         $this->app->bind(ReserveHistoricRepository::class, ReserveHistoricRepositoryEloquent::class);
         $this->app->bind(ReserveReasonCancelRepository::class, ReserveReasonCancelRepositoryEloquent::class);
+        $this->app->bind(ScoreAttendantRepository::class, ScoreAttendantRepositoryEloquent::class);
     }
 
     /**

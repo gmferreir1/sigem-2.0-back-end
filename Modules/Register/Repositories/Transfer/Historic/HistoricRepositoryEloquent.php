@@ -1,21 +1,18 @@
 <?php
 
-namespace Modules\Register\Repositories\Transfer\Contract;
+namespace Modules\Register\Repositories\Transfer\Historic;
 
-use Modules\Register\Entities\Transfer\Contract\Contract;
+use Modules\Register\Entities\Transfer\Historic\Historic;
 use Prettus\Repository\Eloquent\BaseRepository;
 use Prettus\Repository\Criteria\RequestCriteria;
 
 /**
- * Class ContractRepositoryEloquent.
+ * Class HistoricRepositoryEloquent.
  *
  * @package namespace App\Repositories;
  */
-class ContractRepositoryEloquent extends BaseRepository implements ContractRepository
+class HistoricRepositoryEloquent extends BaseRepository implements HistoricRepository
 {
-    protected $fieldSearchable = [
-        'contract'
-    ];
     /**
      * Specify Model class name
      *
@@ -23,9 +20,8 @@ class ContractRepositoryEloquent extends BaseRepository implements ContractRepos
      */
     public function model()
     {
-        return Contract::class;
+        return Historic::class;
     }
-
 
     /**
      * Boot up the repository, pushing criteria

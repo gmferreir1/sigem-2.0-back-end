@@ -163,7 +163,7 @@ class QueryService
                 $phones = $this->getClientPhones($item['client_id']);
 
                 $data[$key]['owner_phone_residential'] = $phones['residential'];
-                $data[$key]['phone_commercial'] = $phones['commercial'];
+                $data[$key]['owner_phone_commercial'] = $phones['commercial'];
                 $data[$key]['owner_cell_phone'] = $phones['cell_phone'];
             }
 

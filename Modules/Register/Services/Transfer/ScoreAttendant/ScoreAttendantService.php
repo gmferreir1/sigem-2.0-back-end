@@ -55,4 +55,21 @@ class ScoreAttendantService
 
         return true;
     }
+
+    /**
+     * @param int $attendantIdSubtract
+     * @param int $attendantIdAdd
+     * @throws \Exception
+     */
+    public function scoreTransaction(int $attendantIdSubtract, int $attendantIdAdd)
+    {
+        $results = $this->serviceCrud->findWhere(['attendant_id' => $attendantIdSubtract]);
+        $rpLastAction = Auth::user()->id;
+
+        if ($results[0]['score'] > 0) {
+            $this->serviceCrud->update(['score' => $results[0]['score'] - 1, 'rp_last_action' => $rpLastAction], $results[0]['id'], false);
+        }
+
+        $this->addScore($attendantIdAdd);
+    }
 }

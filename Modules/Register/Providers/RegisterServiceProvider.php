@@ -6,6 +6,8 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
 use Modules\Register\Repositories\Transfer\Contract\ContractRepository;
 use Modules\Register\Repositories\Transfer\Contract\ContractRepositoryEloquent;
+use Modules\Register\Repositories\Transfer\Historic\HistoricRepository;
+use Modules\Register\Repositories\Transfer\Historic\HistoricRepositoryEloquent;
 use Modules\Register\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepository;
 use Modules\Register\Repositories\Transfer\ScoreAttendant\ScoreAttendantRepositoryEloquent;
 use Modules\Register\Repositories\ReserveContract\ReserveContractRepository;
@@ -56,6 +58,7 @@ class RegisterServiceProvider extends ServiceProvider
         $this->app->bind(ScoreAttendantRepository::class, ScoreAttendantRepositoryEloquent::class);
         $this->app->bind(ReasonRepository::class, ReasonRepositoryEloquent::class);
         $this->app->bind(ContractRepository::class, ContractRepositoryEloquent::class);
+        $this->app->bind(HistoricRepository::class, HistoricRepositoryEloquent::class);
     }
 
     /**

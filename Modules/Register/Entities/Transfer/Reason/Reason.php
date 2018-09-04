@@ -23,8 +23,11 @@ class Reason extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'id',
         'reason',
-        'rp_last_action'
+        'rp_last_action',
+        'created_at',
+        'updated_at'
     ];
 
 

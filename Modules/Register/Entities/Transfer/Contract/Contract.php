@@ -1,6 +1,6 @@
 <?php
 
-namespace Modules\Register\Entities\Contract;
+namespace Modules\Register\Entities\Transfer\Contract;
 
 use Illuminate\Database\Eloquent\Model;
 use Modules\Register\Entities\Transfer\Reason\Reason;

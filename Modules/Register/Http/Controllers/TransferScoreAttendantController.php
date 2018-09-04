@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Register\Presenters\Transfer\ScoreAttendant\ScoreAttendantPresenter;
 use Modules\Register\Services\Transfer\ScoreAttendant\ScoreAttendantService;
 use Modules\Register\Services\Transfer\ScoreAttendant\ScoreAttendantServiceCrud;
+use Modules\User\Services\UserService;
 
 class TransferScoreAttendantController extends Controller
 {
@@ -19,11 +20,16 @@ class TransferScoreAttendantController extends Controller
      * @var ScoreAttendantService
      */
     private $service;
+    /**
+     * @var UserService
+     */
+    private $userService;
 
-    public function __construct(ScoreAttendantServiceCrud $serviceCrud, ScoreAttendantService $service)
+    public function __construct(ScoreAttendantServiceCrud $serviceCrud, ScoreAttendantService $service, UserService $userService)
     {
         $this->serviceCrud = $serviceCrud;
         $this->service = $service;
+        $this->userService = $userService;
     }
 
 
@@ -74,5 +80,25 @@ class TransferScoreAttendantController extends Controller
         return [
             'success' => true
         ];
+    }
+
+    /**
+     * @return array
+     */
+    public function getLastAttendance()
+    {
+        $closure = function ($query) {
+            return $query->orderBy('score', 'ASC');
+        };
+
+        $results = $this->serviceCrud->scopeQuery($closure);
+        if ($results->count()) {
+            return [
+                'id' => $results[0]['attendant_id'],
+                'name' => $this->userService->getNameById($results[0]['attendant_id'])
+            ];
+        }
+
+        return [];
     }
 }

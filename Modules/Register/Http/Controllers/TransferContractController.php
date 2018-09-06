@@ -123,9 +123,12 @@ class TransferContractController extends Controller
 
         $results = $this->serviceCrud->scopeQuery($closure, false, 0, ContractPresenter::class);
 
-        $results['data'] = $this->service->sort($results['data'], $queryParams['sort_by'], $queryParams['sort_order']);
-
         if ($queryParams['printer']) {
+
+            if ($queryParams['sort_by'] &&  $queryParams['sort_order']) {
+                $results['data'] = $this->service->sort($results['data'], $queryParams['sort_by'], $queryParams['sort_order']);
+            }
+
             $results['period'] = 'Geral';
             $results['report_qt'] = $this->quantityService->getReportQt($results['data']);
             $viewName = 'register::transfer.printer.ListContractTransfer';

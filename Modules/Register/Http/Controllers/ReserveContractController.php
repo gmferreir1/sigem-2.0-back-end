@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Modules\ControlLetter\Services\ControlLetterService;
 use Modules\Register\Presenters\ReserveContract\ReserveContractListPresenter;
 use Modules\Register\Presenters\ReserveContract\ReserveContractPresenter;
 use Modules\Register\Presenters\ReserveHistoric\ReserveHistoricPresenter;
@@ -52,10 +53,15 @@ class ReserveContractController extends Controller
      * @var ReserveContractPrinterService
      */
     private $reserveContractPrinterService;
+    /**
+     * @var ControlLetterService
+     */
+    private $controlLetterService;
 
     public function __construct(ReserveContractServiceCrud $serviceCrud, ReserveContractService $service, ScoreAttendanceService $scoreAttendanceService
                                 , ReserveHistoricService $reserveHistoricService, ReserveHistoricServiceCrud $reserveHistoricServiceCrud
-                                , ReserveContractCustomValidadeService $reserveContractCustomValidadeService, ReserveContractPrinterService $reserveContractPrinterService)
+                                , ReserveContractCustomValidadeService $reserveContractCustomValidadeService, ReserveContractPrinterService $reserveContractPrinterService
+                                , ControlLetterService $controlLetterService)
     {
         $this->serviceCrud = $serviceCrud;
         $this->service = $service;
@@ -64,6 +70,7 @@ class ReserveContractController extends Controller
         $this->reserveHistoricServiceCrud = $reserveHistoricServiceCrud;
         $this->reserveContractCustomValidadeService = $reserveContractCustomValidadeService;
         $this->reserveContractPrinterService = $reserveContractPrinterService;
+        $this->controlLetterService = $controlLetterService;
     }
 
     /**
@@ -402,6 +409,30 @@ class ReserveContractController extends Controller
     public function getYearsAvailable()
     {
         return $this->service->getYearsAvailable();
+    }
+
+
+    /**
+     * Busca os dados da carta para envio de email
+     */
+    public function emailData()
+    {
+        $queryParams = [
+            'type_email' => Request()->get('type_email'),
+            'reserve_id' => Request()->get('reserve_id')
+        ];
+
+        // pega os dados da reserva
+        $reserveData = $this->serviceCrud->find($queryParams['reserve_id']);
+
+        // verifica o status da reserva
+        if ($reserveData->status === 'r' || $reserveData->status === 'd' || $reserveData->status === 'a' || $reserveData->status === 'cd' || $reserveData->status === 'p') {
+            $message[] = "Status atual não permite esta operação";
+            return response($message, 422);
+        }
+
+
+        return $this->controlLetterService->mountLetter($queryParams['type_email'], $reserveData->toArray());
     }
 
     /**

@@ -3,8 +3,10 @@
 namespace Modules\Sicadi\Services;
 
 
+use Modules\Sicadi\Repositories\AddressRepository;
 use Modules\Sicadi\Repositories\ClientContractRepository;
 use Modules\Sicadi\Repositories\ClientRepository;
+use Modules\Sicadi\Repositories\ContractRepository;
 use Modules\Sicadi\Repositories\ImmobileRepository;
 use Modules\Sicadi\Repositories\ImmobileTypeRepository;
 use Modules\Sicadi\Repositories\PhoneRepository;
@@ -41,10 +43,19 @@ class QueryService
      * @var ImmobileTypeRepository
      */
     private $immobileTypeRepository;
+    /**
+     * @var AddressRepository
+     */
+    private $addressRepository;
+    /**
+     * @var ContractRepository
+     */
+    private $contractRepository;
 
     public function __construct(TenantAllContractRepository $tenantAllContractRepository, ReceiptTenantRepository $receiptTenantRepository,
                                 PhoneRepository $phoneRepository, ClientRepository $clientRepository, ClientContractRepository $clientContractRepository,
-                                ImmobileRepository $immobileRepository, ImmobileTypeRepository $immobileTypeRepository)
+                                ImmobileRepository $immobileRepository, ImmobileTypeRepository $immobileTypeRepository, AddressRepository $addressRepository,
+                                ContractRepository $contractRepository)
     {
         $this->tenantAllContractRepository = $tenantAllContractRepository;
         $this->receiptTenantRepository = $receiptTenantRepository;
@@ -53,6 +64,8 @@ class QueryService
         $this->clientContractRepository = $clientContractRepository;
         $this->immobileRepository = $immobileRepository;
         $this->immobileTypeRepository = $immobileTypeRepository;
+        $this->addressRepository = $addressRepository;
+        $this->contractRepository = $contractRepository;
     }
 
     /**
@@ -186,17 +199,34 @@ class QueryService
                 ->select('immobiles.immobile_code', 'immobiles.address', 'immobiles.neighborhood'
                     , 'immobiles.city', 'immobiles.state', 'immobiles.zip_code', 'immobiles.value_rent as value'
                     , 'immobiles.type_immobile', 'immobiles.type_occupation as type_location', 'immobiles.iptu', 'immobiles.type_immobile_id'
-                    , 'clients.client_id_sicadi as client_id', 'clients.client_name as owner', 'clients.email as owner_email');
+                    , 'clients.client_id_sicadi as client_id', 'clients.client_code as owner_code', 'clients.client_name as owner', 'clients.email as owner_email');
         })->all();
 
         if ($data->count()) {
 
             $data[0]['value'] = (float) $data[0]['value'];
 
+            /*
+           * Endereço do proprietário
+           */
+            $address = $this->getClientAddress(['client_id' => $data[0]['client_id']]);
+            $data[0]['owner_address'] = $address['address'];
+            $data[0]['owner_neighborhood'] = $address['neighborhood'];
+            $data[0]['owner_city'] = $address['city'];
+            $data[0]['owner_state'] = $address['state'];
+            $data[0]['owner_zip_code'] = $address['zip_code'];
+
             return $data[0];
         }
 
         return [];
+    }
+
+    public function getContractData(string $contract)
+    {
+        $contractData = $this->contractRepository->findWhere(['contract_code' => $contract]);
+
+        return $contractData->count() ? $contractData[0] : null;
     }
 
 
@@ -295,5 +325,16 @@ class QueryService
         }
 
         return [];
+    }
+
+    /**
+     * Retorna endereço
+     * @param array $params
+     * @return null
+     */
+    private function getClientAddress(array $params)
+    {
+        $clientAddress = $this->addressRepository->findWhere($params);
+        return count($clientAddress) ? $clientAddress[0] : null;
     }
 }

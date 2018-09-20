@@ -16,7 +16,6 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'register', 'namespace' 
     */
     Route::group(['prefix' => 'reserve-contract'], function () {
 
-
         /* ****
          * Score Atendimento
          *
@@ -46,11 +45,21 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'register', 'namespace' 
         });
 
 
+
+     /* ****
+      * Rota montagem emails para o proprietário, inquilino, condominio
+      *
+      * Route::register/reserve-contract/email-data
+      */
+        Route::get('email-data/{queryParams?}', 'ReserveContractController@emailData');
+
+
         /* ****
         * Rota reservas de contratos
         *
         * Route::register/reserve-contract
         */
+
         Route::get('printer/{queryParams?}', 'ReserveContractController@callPrinter');
         Route::post('', 'ReserveContractController@save');
         Route::put('{id}', 'ReserveContractController@update');

@@ -43,6 +43,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\ContractRepository::class, \App\Repositories\ContractRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\HistoricRepository::class, \App\Repositories\HistoricRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\ReportListRepository::class, \App\Repositories\ReportListRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\ControlLetterRepository::class, \App\Repositories\ControlLetterRepositoryEloquent::class);
         //:end-bindings:
     }
 }

@@ -46,4 +46,13 @@ class ControlLetterController extends Controller
 
         return $this->serviceCrud->update($data, $id);
     }
+
+    /**
+     * Retorna o total de cartas registradas no sistema
+     * @return mixed
+     */
+    public function getTotalLettersRegistered()
+    {
+        return $this->serviceCrud->all()->count();
+    }
 }

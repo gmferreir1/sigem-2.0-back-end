@@ -4,6 +4,8 @@ namespace Modules\Register\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Database\Eloquent\Factory;
+use Modules\Register\Repositories\ReserveSendLetter\ReserveSendLetterRepository;
+use Modules\Register\Repositories\ReserveSendLetter\ReserveSendLetterRepositoryEloquent;
 use Modules\Register\Repositories\Transfer\Contract\ContractRepository;
 use Modules\Register\Repositories\Transfer\Contract\ContractRepositoryEloquent;
 use Modules\Register\Repositories\Transfer\Historic\HistoricRepository;
@@ -59,6 +61,7 @@ class RegisterServiceProvider extends ServiceProvider
         $this->app->bind(ReasonRepository::class, ReasonRepositoryEloquent::class);
         $this->app->bind(ContractRepository::class, ContractRepositoryEloquent::class);
         $this->app->bind(HistoricRepository::class, HistoricRepositoryEloquent::class);
+        $this->app->bind(ReserveSendLetterRepository::class, ReserveSendLetterRepositoryEloquent::class);
     }
 
     /**

@@ -4,9 +4,9 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 /**
- * Class CreateControlLettersTable.
+ * Class CreateReserveSendLettersTable.
  */
-class CreateControlLettersTable extends Migration
+class CreateReserveSendLettersTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -15,7 +15,7 @@ class CreateControlLettersTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('control_letters', function(Blueprint $table) {
+		Schema::create('reserve_send_letters', function(Blueprint $table) {
             $table->increments('id');
 
             $table->timestamps();
@@ -29,6 +29,6 @@ class CreateControlLettersTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::drop('control_letters');
+		Schema::drop('reserve_send_letters');
 	}
 }

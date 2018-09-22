@@ -66,11 +66,11 @@ class Mailer
         }
 
         if (isset($this->configAttachment['welcome_tenant']) && $this->configAttachment['welcome_tenant'] == true) {
-            $mail->AddEmbeddedImage(public_path().'/storage/images/boas-vindas-locatario.jpg', 'boasVindasLocatario');
+            $mail->AddEmbeddedImage(public_path().'/storage/images/boas_vindas_locatario.jpg', 'welcomeTenant');
         }
 
         if (isset($this->configAttachment['manual_tenant']) && $this->configAttachment['manual_tenant'] == true) {
-            $mail->addAttachment(storage_path('app/public/attachment/manual-locatario.pdf'), 'Manual Locatário.pdf');
+            $mail->addAttachment(public_path().'/storage/attachment/manual_locatario.pdf', 'Manual Locatário.pdf');
         }
 
         $mail->setFrom($this->mailFrom, $this->nameFrom);

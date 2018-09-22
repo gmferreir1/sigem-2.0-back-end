@@ -199,6 +199,9 @@ class QueryService
                 ->select('immobiles.immobile_code', 'immobiles.address', 'immobiles.neighborhood'
                     , 'immobiles.city', 'immobiles.state', 'immobiles.zip_code', 'immobiles.value_rent as value'
                     , 'immobiles.type_immobile', 'immobiles.type_occupation as type_location', 'immobiles.iptu', 'immobiles.type_immobile_id'
+                    , 'immobiles.condominium_id as condominium_id', 'immobiles.building_name as building_name', 'immobiles.condominium_name as condominium_name', 'immobiles.condominium_address as condominium_address'
+                    , 'immobiles.condominium_syndicate as condominium_syndicate', 'immobiles.condominium_neighborhood as condominium_neighborhood', 'immobiles.condominium_city as condominium_city', 'immobiles.condominium_state as condominium_state'
+                    , 'immobiles.condominium_cep as condominium_zip_code', 'immobiles.condominium_email as condominium_email'
                     , 'clients.client_id_sicadi as client_id', 'clients.client_code as owner_code', 'clients.client_name as owner', 'clients.email as owner_email');
         })->all();
 
@@ -289,6 +292,30 @@ class QueryService
         };
 
         return $this->immobileTypeRepository->scopeQuery($closure)->all();
+    }
+
+    public function getTenantDataPerContract(string $contract)
+    {
+        $data = $this->tenantAllContractRepository->scopeQuery(function ($query) use ($contract) {
+            return $query->where('contract_code', $contract)
+                ->join('clients', 'tenant_all_contracts.client_code', '=', 'clients.client_code')
+                ->select('clients.*', 'tenant_all_contracts.*');
+        })->all();
+
+        if ($data->count()) {
+
+            $phones = $this->getClientPhones($data[0]['client_id_sicadi']);
+
+            $data[0]['phone_residential'] = format_phone($phones['residential']);
+            $data[0]['phone_commercial'] = format_phone($phones['commercial']);
+            $data[0]['tenant_cell_phone'] = format_phone($phones['cell_phone']);
+
+
+            return $data[0];
+
+        }
+
+        return null;
     }
 
 

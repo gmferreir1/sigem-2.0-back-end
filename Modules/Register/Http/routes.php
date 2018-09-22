@@ -45,12 +45,11 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'register', 'namespace' 
         });
 
 
-
-     /* ****
-      * Rota montagem emails para o proprietário, inquilino, condominio
-      *
-      * Route::register/reserve-contract/email-data
-      */
+       /* ****
+        * Rota montagem emails para o proprietário, inquilino, condominio
+        *
+        * Route::register/reserve-contract/email-data
+        */
         Route::get('email-data/{queryParams?}', 'ReserveContractController@emailData');
 
 
@@ -78,6 +77,7 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'register', 'namespace' 
             Route::get('responsible-for-filter', 'ReserveContractController@getResponsibleForFilter');
             Route::get('check-contract-is-release/{queryParams?}', 'ReserveContractController@checkContractIsRelease');
             Route::get('get-years-available', 'ReserveContractController@getYearsAvailable');
+            Route::get('email-letters/{reserve_id}', 'ReserveContractEmailController@queryEmailLetter');
         });
 
 
@@ -88,6 +88,7 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'register', 'namespace' 
          */
         Route::group(['prefix' => 'emails'], function () {
             Route::get('send-email-end-reserve/{queryParams?}', 'ReserveContractEmailController@sendEmailEndReserve');
+            Route::get('send-email-letters/{queryParams?}', 'ReserveContractEmailController@sendEmailLetters');
         });
 
     });

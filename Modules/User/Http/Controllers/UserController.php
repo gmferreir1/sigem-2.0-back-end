@@ -80,6 +80,22 @@ class UserController extends Controller
     }
 
     /**
+     * Atualiza dados do usuário pela tela de perfil
+     * @param Request $request
+     * @param $id
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function updateUserByProfile(Request $request, $id)
+    {
+        $dataToUpdate = $request->all();
+
+        $dataBeforeUpdate = $this->serviceCrud->find($id)->toArray();
+        $dataToUpdate = $this->validadeFieldsService->actionUpdate($dataBeforeUpdate, $dataToUpdate);
+        return $this->serviceCrud->update($dataToUpdate, $id, false);
+    }
+
+    /**
      * Retorna dados do usuário logado
      * @return array
      */

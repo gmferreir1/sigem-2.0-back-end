@@ -11,6 +11,7 @@ Route::group(['middleware' => ['auth:api'], 'prefix' => 'user', 'namespace' => '
 
     Route::group(['prefix' => 'profile'], function () {
         Route::post('change-profile-image/{user_id?}', 'UserController@changeProfileImage');
+        Route::put('{user_id}', 'UserController@updateUserByProfile');
         Route::get('set-default-image-profile/{user_id?}', 'UserController@setDefaultImageProfile');
     });
 

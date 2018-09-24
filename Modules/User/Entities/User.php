@@ -28,6 +28,7 @@ class User extends Authenticatable implements Transformable
         'last_name',
         'email',
         'type_profile',
+        'image_profile',
         'password',
         'status',
     ];
@@ -47,15 +48,24 @@ class User extends Authenticatable implements Transformable
         $this->attributes['type_profile'] = trim(removeAccents(strtolower($value)));
     }
 
+    public function getImageProfileAttribute($value)
+    {
+        if (!$value) {
+            return env('PROFILE_IMAGE');
+        }
+
+        return $value;
+    }
+
    /* *****************************
     * ********** Atenção **********
     * **** Remover na migração ****
     * *****************************
     */
-    public function setPasswordAttribute($value)
+    /*public function setPasswordAttribute($value)
     {
         if ($value) {
             $this->attributes['password'] = bcrypt($value);
         }
-    }
+    }*/
 }

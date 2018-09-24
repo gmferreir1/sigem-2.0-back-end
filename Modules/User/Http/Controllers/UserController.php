@@ -2,10 +2,11 @@
 
 namespace Modules\User\Http\Controllers;
 
-use App\Events\SystemAction;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
+use Modules\User\Services\UserService;
 use Modules\User\Services\UserServiceCrud;
 use Modules\User\Services\ValidadeFieldsService;
 
@@ -20,11 +21,16 @@ class UserController extends Controller
      * @var ValidadeFieldsService
      */
     private $validadeFieldsService;
+    /**
+     * @var UserService
+     */
+    private $service;
 
-    public function __construct(UserServiceCrud $serviceCrud, ValidadeFieldsService $validadeFieldsService)
+    public function __construct(UserServiceCrud $serviceCrud, ValidadeFieldsService $validadeFieldsService, UserService $service)
     {
         $this->serviceCrud = $serviceCrud;
         $this->validadeFieldsService = $validadeFieldsService;
+        $this->service = $service;
     }
 
     /**
@@ -67,6 +73,7 @@ class UserController extends Controller
         $dataToUpdate = $request->all();
 
         $dataBeforeUpdate = $this->serviceCrud->find($id)->toArray();
+
         $dataToUpdate = $this->validadeFieldsService->actionUpdate($dataBeforeUpdate, $dataToUpdate);
 
         return $this->serviceCrud->update($dataToUpdate, $id);
@@ -85,11 +92,42 @@ class UserController extends Controller
             'name' => $userData->name,
             'last_name' => $userData->last_name,
             'email' => $userData->email,
+            'image_profile' => $userData->image_profile,
         ];
     }
 
     public function getTotalUsersRegistered()
     {
         return $this->serviceCrud->all()->count();
+    }
+
+
+    /**
+     * @param $userId
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function changeProfileImage($userId = null)
+    {
+        if (!$userId) {
+            $userId = Auth::user()->id;
+        }
+
+        return $this->service->changeAvatar(Input::file('attachment'), $userId);
+    }
+
+    /**
+     * Define a imagem padrão para o usuário
+     * @param null $userId
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|mixed|\Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     */
+    public function setDefaultImageProfile($userId = null)
+    {
+        if (!$userId) {
+            $userId = Auth::user()->id;
+        }
+
+        return $this->serviceCrud->update(['image_profile' => null], $userId, false)->image_profile;
     }
 }

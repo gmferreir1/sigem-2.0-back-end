@@ -74,8 +74,8 @@ class ReserveContractTransformer extends TransformerAbstract
             'email_condominium' => $model->email_condominium,
             'id_reason_cancel' => $model->id_reason_cancel,
             'reason_cancel_name' => $this->getReasonCancel($model),
-            'created_at' => date('Y-m-d h:i:s', strtotime($model->created_at)),
-            'updated_at' => date('Y-m-d h:i:s', strtotime($model->updated_at)),
+            'created_at' => date('Y-m-d H:i:s', strtotime($model->created_at)),
+            'updated_at' => date('Y-m-d H:i:s', strtotime($model->updated_at)),
         ];
     }
 

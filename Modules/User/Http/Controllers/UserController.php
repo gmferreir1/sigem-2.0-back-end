@@ -2,6 +2,7 @@
 
 namespace Modules\User\Http\Controllers;
 
+use App\Helpers\Mailer;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -25,12 +26,17 @@ class UserController extends Controller
      * @var UserService
      */
     private $service;
+    /**
+     * @var Mailer
+     */
+    private $mailer;
 
-    public function __construct(UserServiceCrud $serviceCrud, ValidadeFieldsService $validadeFieldsService, UserService $service)
+    public function __construct(UserServiceCrud $serviceCrud, ValidadeFieldsService $validadeFieldsService, UserService $service, Mailer $mailer)
     {
         $this->serviceCrud = $serviceCrud;
         $this->validadeFieldsService = $validadeFieldsService;
         $this->service = $service;
+        $this->mailer = $mailer;
     }
 
     /**

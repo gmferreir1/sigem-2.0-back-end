@@ -39,8 +39,8 @@ class ReserveContractListTransformer extends TransformerAbstract
             'code_reserve' => "$model->code_reserve/$model->year_reserve",
             'code_r' => $model->code_reserve,
             'year_r' => $model->year_reserve,
-            'created_at' => date('Y-m-d h:i:s', strtotime($model->created_at)),
-            'updated_at' => date('Y-m-d h:i:s', strtotime($model->updated_at)),
+            'created_at' => date('Y-m-d H:i:s', strtotime($model->created_at)),
+            'updated_at' => date('Y-m-d H:i:s', strtotime($model->updated_at)),
         ];
     }
 

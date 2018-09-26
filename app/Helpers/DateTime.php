@@ -17,6 +17,15 @@ function dateExtensive($date = null) {
     return strftime("%d", strtotime($date)) . ' de ' . ucwords(strftime("%B", strtotime($date))) . ' de ' . ucwords(strftime("%Y", strtotime($date)));
 }
 
+function getCurrentMonth($date = null) {
+    if(!$date) {
+        $date = date('Y-m-d');
+    }
+    setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+    date_default_timezone_set('America/Sao_Paulo');
+    return ucwords(strftime("%B", strtotime($date)));
+}
+
 /**
  * Recebe a quantidade de dias como parâmetro e retorna os anos meses e dias de acordo a data
  * @param $day

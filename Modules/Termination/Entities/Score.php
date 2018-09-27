@@ -27,6 +27,8 @@ class Score extends Model implements Transformable
         'attendant_id',
         'score',
         'rp_last_action',
+        'created_at',
+        'updated_at'
     ];
 
     /**

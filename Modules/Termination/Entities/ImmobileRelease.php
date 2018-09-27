@@ -38,7 +38,9 @@ class ImmobileRelease extends Model implements Transformable
         'rp_release',
         'rp_end_process',
         'status',
-        'rp_last_action'
+        'rp_last_action',
+        'created_at',
+        'updated_at'
     ];
 
     public function setImmobileCodeAttribute($value)

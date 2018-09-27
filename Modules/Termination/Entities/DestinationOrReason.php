@@ -26,7 +26,9 @@ class DestinationOrReason extends Model implements Transformable
         'id',
         'type',
         'text',
-        'rp_last_action'
+        'rp_last_action',
+        'created_at',
+        'updated_at'
     ];
 
     public function setTypeAttribute($value)

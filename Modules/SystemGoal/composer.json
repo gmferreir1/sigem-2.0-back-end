@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/systemgoal",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\SystemGoal\\Providers\\SystemGoalServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\SystemGoal\\": ""
+        }
+    }
+}

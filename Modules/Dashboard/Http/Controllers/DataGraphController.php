@@ -202,4 +202,44 @@ class DataGraphController extends Controller
             'goal' => (float) $goal
         ];
     }
+
+    public function dataGraphContractInactivated()
+    {
+        $month = date('m');
+        $year = date('Y');
+
+        // verifica se tem meta registrada no sistema
+        $checkGoal = $this->systemGoalServiceCrud->findWhere(['name' => 'ci']);
+        if (!$checkGoal->count()) {
+            return [
+                'error' => true,
+                'message' => 'no goals found'
+            ];
+        }
+
+        $closure =  function ($query) use ($year, $month) {
+            return $query->where('type_register', 'termination')
+                ->whereBetween('end_process', [$this->initDateCurrentMonth($year, $month), $this->endDateCurrentMonth($year, $month)])
+                ->whereIn('status', array('r', 'a', 'j', 'cej'));
+        };
+
+        $getGoal = $this->terminationContractServiceCrud->scopeQuery($closure);
+
+        return [
+            'data' => [
+                [
+                    'name' => 'Inativados',
+                    'y' => $getGoal->sum('value'),
+                    'color' => 'darkred'
+                ],
+                [
+                    'name' => 'Meta Máxima',
+                    'y' => (float)$checkGoal[0]['value'],
+                    'color' => 'darkgreen'
+                ]
+            ],
+            'month' => getCurrentMonth(),
+            'goal' => (float) $checkGoal[0]['value']
+        ];
+    }
 }

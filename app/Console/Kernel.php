@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\CheckUserOnline;
 use App\Console\Commands\MigrateDeadFile;
 use App\Console\Commands\MigrateFinancialContractCelebrated;
 use App\Console\Commands\MigrateImmobileCaptured;
@@ -27,6 +28,7 @@ class Kernel extends ConsoleKernel
         MigrateFinancialContractCelebrated::class,
         MigrateImmobileCaptured::class,
         MigrateUser::class,
+        CheckUserOnline::class,
     ];
 
     /**
@@ -39,6 +41,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
+        //$schedule->command(Test::class)->everyMinute();
+        $schedule->command(CheckUserOnline::class)->everyFiveMinutes();
     }
 
     /**

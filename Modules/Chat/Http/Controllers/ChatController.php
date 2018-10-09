@@ -135,9 +135,12 @@ class ChatController extends Controller
 
             foreach ($allUsers as $item) {
 
+                $qtMessageNotRead = $this->messageServiceCrud->findWhere(['user_id_sender' => $item['id'], 'user_id_destination' => Auth::user()->id, 'date_read' => null])->count();
+
                 $dataUser = [
                     'id' => $item['id'],
-                    'name' => $item['name'] . ' ' . $item['last_name']
+                    'name' => $item['name'] . ' ' . $item['last_name'],
+                    'qt' => !$qtMessageNotRead ? null : $qtMessageNotRead
                 ];
 
                 $isOnline = $this->service->checkIsOnline($item['id']);

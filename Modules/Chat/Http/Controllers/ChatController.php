@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Modules\Chat\Services\ChatService;
 use Modules\Chat\Services\MessageServiceCrud;
 use Modules\Chat\Services\OnlineUserServiceCrud;
+use Modules\SystemAlert\Services\SystemAlertServiceCrud;
 use Modules\User\Services\UserServiceCrud;
 
 class ChatController extends Controller
@@ -31,13 +32,19 @@ class ChatController extends Controller
      * @var MessageServiceCrud
      */
     private $messageServiceCrud;
+    /**
+     * @var SystemAlertServiceCrud
+     */
+    private $systemAlertServiceCrud;
 
-    public function __construct(OnlineUserServiceCrud $onlineUserServiceCrud, UserServiceCrud $userServiceCrud, ChatService $service, MessageServiceCrud $messageServiceCrud)
+    public function __construct(OnlineUserServiceCrud $onlineUserServiceCrud, UserServiceCrud $userServiceCrud, ChatService $service, MessageServiceCrud $messageServiceCrud
+                                , SystemAlertServiceCrud $systemAlertServiceCrud)
     {
         $this->onlineUserServiceCrud = $onlineUserServiceCrud;
         $this->userServiceCrud = $userServiceCrud;
         $this->service = $service;
         $this->messageServiceCrud = $messageServiceCrud;
+        $this->systemAlertServiceCrud = $systemAlertServiceCrud;
     }
 
     /**
@@ -216,6 +223,22 @@ class ChatController extends Controller
         $data['user_id_sender'] = Auth::user()->id;
 
         $dataCreated = $this->messageServiceCrud->create($data);
+
+        if (!isset($dataCreated->id)) {
+            return $dataCreated;
+        }
+
+        /*
+         * mensagem chat para o alerta do sistema
+         */
+        $dataMessage = [
+            'message' => 'você tem uma nova mensagem do chat',
+            'read' => false,
+            'responsible' => $dataCreated->user_id_destination
+        ];
+
+
+        $this->systemAlertServiceCrud->create($dataMessage, false);
 
         return $dataCreated;
     }

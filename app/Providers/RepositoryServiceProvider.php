@@ -50,6 +50,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(\App\Repositories\SystemGoalRepository::class, \App\Repositories\SystemGoalRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\MessageRepository::class, \App\Repositories\MessageRepositoryEloquent::class);
         $this->app->bind(\App\Repositories\OnlineUserRepository::class, \App\Repositories\OnlineUserRepositoryEloquent::class);
+        $this->app->bind(\App\Repositories\SystemAlertRepository::class, \App\Repositories\SystemAlertRepositoryEloquent::class);
         //:end-bindings:
     }
 }

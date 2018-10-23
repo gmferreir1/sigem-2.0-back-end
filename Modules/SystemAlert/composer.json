@@ -1,0 +1,25 @@
+{
+    "name": "nwidart/systemalert",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Modules\\SystemAlert\\Providers\\SystemAlertServiceProvider"
+            ],
+            "aliases": {
+                
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\SystemAlert\\": ""
+        }
+    }
+}

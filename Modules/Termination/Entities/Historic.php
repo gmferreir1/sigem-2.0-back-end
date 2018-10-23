@@ -24,6 +24,7 @@ class Historic extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'id',
         'contract_id',
         'historic',
         'rp_last_action',

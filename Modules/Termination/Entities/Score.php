@@ -24,6 +24,7 @@ class Score extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'id',
         'attendant_id',
         'score',
         'rp_last_action',

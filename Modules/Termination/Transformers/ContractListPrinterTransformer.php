@@ -74,7 +74,8 @@ class ContractListPrinterTransformer extends TransformerAbstract
 
     private function getDestinationName($model): string
     {
-        if (isset($model->destination_id)) {
+
+        if (isset($model->destination_id) and $model->getDestinationData) {
             return $model->getDestinationData->text;
         }
 

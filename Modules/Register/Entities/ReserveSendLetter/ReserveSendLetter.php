@@ -24,6 +24,7 @@ class ReserveSendLetter extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'id',
         'letter_name',
         'reserve_id',
         'rp_last_action',

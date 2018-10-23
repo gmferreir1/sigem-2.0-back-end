@@ -23,6 +23,7 @@ class ReserveReasonCancel extends Model implements Transformable
      * @var array
      */
     protected $fillable = [
+        'id',
         'reason',
         'rp_last_action'
     ];

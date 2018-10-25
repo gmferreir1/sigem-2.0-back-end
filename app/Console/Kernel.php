@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Console\Commands\AdjustTerminationData;
 use App\Console\Commands\CheckUserOnline;
 use App\Console\Commands\MigrateDeadFile;
 use App\Console\Commands\MigrateFinancialContractCelebrated;
@@ -29,6 +30,7 @@ class Kernel extends ConsoleKernel
         MigrateImmobileCaptured::class,
         MigrateUser::class,
         CheckUserOnline::class,
+        AdjustTerminationData::class
     ];
 
     /**

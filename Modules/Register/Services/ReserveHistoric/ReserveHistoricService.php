@@ -76,9 +76,18 @@ class ReserveHistoricService
         if ($beforeChange['situation'] != $afterChange['situation']) {
 
             if ($afterChange['situation'] == 'c') {
-                $messageChange = "alterou a situação de " . getSituationNameReserve($beforeChange['situation']) .
-                    " para " .getSituationNameReserve($afterChange['situation']) . " motivo:
-                      <span style='font-weight: bold; color:darkred'>" . $extraData['reason_cancel'] . "</span>";
+
+                if ($beforeChange['reason_cancel_detail']) {
+
+                    $messageChange = "alterou a situação de " . getSituationNameReserve($beforeChange['situation']) . " para " . getSituationNameReserve($afterChange['situation']) .
+                        " motivo: <span style='font-weight: bold; color:darkred'>" . $beforeChange['reason_cancel'] . "</span>
+                                <p> Observação: ".$beforeChange['reason_cancel_detail']." </p>";
+
+                } else {
+
+                    $messageChange = "alterou a situação de " . getSituationNameReserve($beforeChange['situation']) . " para " . getSituationNameReserve($afterChange['situation']) .
+                        " motivo: <span style='font-weight: bold; color:darkred'>" . $beforeChange['reason_cancel'] . "</span>";
+                }
 
             } else {
                 $messageChange = "alterou a situação de " .getSituationNameReserve($beforeChange['situation']) .

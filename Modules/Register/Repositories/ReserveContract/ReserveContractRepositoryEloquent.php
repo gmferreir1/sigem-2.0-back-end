@@ -13,6 +13,14 @@ use Prettus\Repository\Criteria\RequestCriteria;
  */
 class ReserveContractRepositoryEloquent extends BaseRepository implements ReserveContractRepository
 {
+
+    protected $fieldSearchable = [
+        'contract',
+        'immobile_code',
+        'address',
+        'client_name',
+    ];
+
     /**
      * Specify Model class name
      *

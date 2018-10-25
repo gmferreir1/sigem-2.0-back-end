@@ -18,6 +18,7 @@ use Modules\Register\Services\ReserveContract\ReserveContractService;
 use Modules\Register\Services\ReserveContract\ReserveContractServiceCrud;
 use Modules\Register\Services\ReserveHistoric\ReserveHistoricService;
 use Modules\Register\Services\ReserveHistoric\ReserveHistoricServiceCrud;
+use Modules\Register\Services\ReserveReasonCancel\ReserveReasonCancelServiceCrud;
 use Modules\Register\Services\ScoreAttendance\ScoreAttendanceService;
 
 class ReserveContractController extends Controller
@@ -57,11 +58,15 @@ class ReserveContractController extends Controller
      * @var ControlLetterService
      */
     private $controlLetterService;
+    /**
+     * @var ReserveReasonCancelServiceCrud
+     */
+    private $reasonCancelServiceCrud;
 
     public function __construct(ReserveContractServiceCrud $serviceCrud, ReserveContractService $service, ScoreAttendanceService $scoreAttendanceService
                                 , ReserveHistoricService $reserveHistoricService, ReserveHistoricServiceCrud $reserveHistoricServiceCrud
                                 , ReserveContractCustomValidadeService $reserveContractCustomValidadeService, ReserveContractPrinterService $reserveContractPrinterService
-                                , ControlLetterService $controlLetterService)
+                                , ControlLetterService $controlLetterService, ReserveReasonCancelServiceCrud $reasonCancelServiceCrud)
     {
         $this->serviceCrud = $serviceCrud;
         $this->service = $service;
@@ -71,6 +76,7 @@ class ReserveContractController extends Controller
         $this->reserveContractCustomValidadeService = $reserveContractCustomValidadeService;
         $this->reserveContractPrinterService = $reserveContractPrinterService;
         $this->controlLetterService = $controlLetterService;
+        $this->reasonCancelServiceCrud = $reasonCancelServiceCrud;
     }
 
     /**
@@ -310,8 +316,8 @@ class ReserveContractController extends Controller
          * Verifica se a reserva esta sendo cancelada para setar a data de conclusão e a data do fim do processo
          */
         if ($dataToUpdate['situation'] != $dataBeforeUpdate['situation'] && $dataToUpdate['situation'] == 'c') {
-            $data['conclusion'] = date('Y-m-d');
-            $data['end_process'] = date('Y-m-d');
+            $dataToUpdate['conclusion'] = date('Y-m-d');
+            $dataToUpdate['end_process'] = date('Y-m-d');
         }
 
         /*
@@ -353,15 +359,17 @@ class ReserveContractController extends Controller
 
         if ($dataToUpdate['situation'] == 'c') {
 
-            /*
-            $reasonCancel = $this->reasonCancelServiceCrud->find($data['id_reason_cancel']);
-            if ($data['reason_cancel_detail']) {
-                $extraData['reason_cancel'] = uppercase($reasonCancel['reason']) . '. Detalhamento do motivo: '.$data['reason_cancel_detail'] ;
-            } else {
-                $extraData['reason_cancel'] = uppercase($reasonCancel['reason']);
+            $reasonCancel = '';
+            $dataReasonCancel = $this->reasonCancelServiceCrud->find($dataToUpdate['id_reason_cancel']);
+
+            if ($dataReasonCancel->count()) {
+                $reasonCancel = $dataReasonCancel->reason;
             }
-            */
+
+            $dataBeforeUpdate['reason_cancel'] = $reasonCancel;
+            $dataBeforeUpdate['reason_cancel_detail'] = $dataToUpdate['reason_cancel_detail'];
         }
+
 
         $this->reserveHistoricService->updateReserve($dataBeforeUpdate, $dataAfterUpdate->toArray(), $extraData);
 

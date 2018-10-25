@@ -41,15 +41,35 @@ class ReserveContractService
         }
 
         if (!$filter['responsible_register_sector']) {
-            $filter['responsible_register_sector'] = collect($this->getAllResponsible()['users_register_sector'])->pluck('id');
+            $filter['responsible_register_sector'] = collect($this->getIdsResponsible()['users_register_sector']);
         }
 
         if (!$filter['responsible_reception']) {
-            $filter['responsible_reception'] = collect($this->getAllResponsible()['users_reception'])->pluck('id');
+            $filter['responsible_reception'] = collect($this->getIdsResponsible()['users_reception']);
         }
 
 
         return $filter;
+    }
+
+    /**
+     * Retorna os ids dos responsaveis para montagem do filtro
+     * @return array
+     */
+    public function getIdsResponsible()
+    {
+        $responsibleRegisterSector = [];
+        $responsibleReceptionSector = [];
+
+        $allResults = $this->serviceCrud->all(false, 0, null, ['attendant_register_id', 'attendant_reception_id']);
+
+        $responsibleRegisterSector = $allResults->unique('attendant_register_id')->pluck('attendant_register_id')->values()->all();
+        $responsibleReceptionSector = $allResults->unique('attendant_reception_id')->pluck('attendant_reception_id')->values()->all();
+
+        return [
+            'users_register_sector' => $responsibleRegisterSector,
+            'users_reception' => $responsibleReceptionSector
+        ];
     }
 
     public function getYearsAvailable()

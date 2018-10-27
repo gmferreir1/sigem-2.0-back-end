@@ -12,6 +12,7 @@ use Modules\Termination\Services\ContractReportService;
 use Modules\Termination\Services\ContractService;
 use Modules\Termination\Services\ContractServiceCrud;
 use Modules\Termination\Services\HistoricServiceCrud;
+use Modules\Termination\Services\RentAccessoryService;
 use Modules\Termination\Services\RentAccessoryServiceCrud;
 use Modules\Termination\Services\ScoreService;
 
@@ -47,11 +48,15 @@ class ContractController extends Controller
      * @var ContractReportService
      */
     private $contractReportService;
+    /**
+     * @var RentAccessoryService
+     */
+    private $rentAccessoryService;
 
 
     public function __construct(ContractServiceCrud $serviceCrud, ContractService $service, RentAccessoryServiceCrud $rentAccessoryServiceCrud
                                 , QueryService $queryService, HistoricServiceCrud $historicServiceCrud, ScoreService $scoreService
-                                , ContractReportService $contractReportService)
+                                , ContractReportService $contractReportService, RentAccessoryService $rentAccessoryService)
     {
         $this->serviceCrud = $serviceCrud;
         $this->service = $service;
@@ -60,6 +65,7 @@ class ContractController extends Controller
         $this->historicServiceCrud = $historicServiceCrud;
         $this->scoreService = $scoreService;
         $this->contractReportService = $contractReportService;
+        $this->rentAccessoryService = $rentAccessoryService;
     }
 
 
@@ -98,7 +104,8 @@ class ContractController extends Controller
         }
 
         // cria acessorios da locação
-        $this->rentAccessoryServiceCrud->create(['termination_id' => $dataCreated->id, 'rp_last_action' => Auth::user()->id], false);
+        $dataPaymentLastRent = $this->rentAccessoryService->getPaymentRentData($dataToCreate['contract']);
+        $this->rentAccessoryServiceCrud->create(['termination_id' => $dataCreated->id, 'value_rent' => $dataPaymentLastRent, 'rp_last_action' => Auth::user()->id], false);
 
         // grava o histórico
         $type = $dataCreated->type_register === 'termination' ? 'inativação' : 'transferencia';

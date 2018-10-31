@@ -80,9 +80,9 @@
         <thead>
         <tr style="font-size: 10px; background-color: #E98531">
             <th class="text-left" style="width: 250px">Proprietário</th>
-            <th class="text-center" style="width: 80px;">Código</th>
-            <th class="text-center" style="width: 60px">Fin</th>
-            <th class="text-left" style="width: 350px;">Endereço</th>
+            <th class="text-center" style="width: 100px;">Código</th>
+            <th class="text-center" style="width: 80px">Fin</th>
+            <th class="text-left" style="width: 400px;">Endereço</th>
             <th class="text-left" style="width: 100px">Tipo</th>
             <th class="text-center" style="width: 100px">Valor</th>
             <th class="text-center" style="width: 80px">Captação</th>

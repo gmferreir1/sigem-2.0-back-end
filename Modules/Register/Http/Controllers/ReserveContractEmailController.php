@@ -205,7 +205,16 @@ class ReserveContractEmailController extends Controller
             'view' => 'register::reserve.email.notificationLetter'
         ];
 
-        $this->mailer->config($emailTo, $nameTo , $subject, $dataBodyMail)->send();
+
+        $configAttachment = [
+            'extract_owner' => $queryParams['type_email'] == 'email_send_owner' ? true : false,
+            'use_logo' => true,
+            'welcome_tenant' => false,
+            'manual_tenant' => false,
+        ];
+
+
+        $this->mailer->config($emailTo, $nameTo , $subject, $dataBodyMail, null, null, $configAttachment)->send();
 
         // depois do envio do email gravar em base de dados
         $paramsData = [
@@ -252,6 +261,7 @@ class ReserveContractEmailController extends Controller
 
         $configAttachment = [
             'use_logo' => false,
+            'extract_owner' => false,
             'welcome_tenant' => true,
             'manual_tenant' => true,
         ];

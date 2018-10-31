@@ -61,17 +61,25 @@ class Mailer
             ]
         ];
 
+        if (!isset($this->configAttachment['extract_owner']) || $this->configAttachment['extract_owner'] == true) {
+            $mail->AddEmbeddedImage(public_path().'/storage/attachment/extrato_aluguel.png', 'extractOwner');
+        }
+
         if (!isset($this->configAttachment['use_logo']) || $this->configAttachment['use_logo'] == true) {
-            $mail->AddEmbeddedImage(public_path().'/storage/images/logo-master-netimoveis.png', 'logoMasterNetImoveis');
+            $mail->AddEmbeddedImage(public_path().'/storage/images/logo_master.png', 'logoMasterNetImoveis');
         }
 
         if (isset($this->configAttachment['welcome_tenant']) && $this->configAttachment['welcome_tenant'] == true) {
-            $mail->AddEmbeddedImage(public_path().'/storage/images/boas_vindas_locatario.jpg', 'welcomeTenant');
+            $mail->AddEmbeddedImage(public_path().'/storage/images/boas_vindas_locatario.png', 'welcomeTenant');
         }
 
         if (isset($this->configAttachment['manual_tenant']) && $this->configAttachment['manual_tenant'] == true) {
             $mail->addAttachment(public_path().'/storage/attachment/manual_locatario.pdf', 'Manual Locatário.pdf');
         }
+
+        $mail->AddEmbeddedImage(public_path().'/storage/images/blog.png', 'blogIcon');
+        $mail->AddEmbeddedImage(public_path().'/storage/images/facebook.png', 'facebookIcon');
+        $mail->AddEmbeddedImage(public_path().'/storage/images/instagram.png', 'instagramIcon');
 
         $mail->setFrom($this->mailFrom, $this->nameFrom);
         $mail->addAddress($this->mailTo, $this->nameTo);

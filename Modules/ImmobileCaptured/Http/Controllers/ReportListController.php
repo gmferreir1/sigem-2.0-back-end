@@ -117,7 +117,7 @@ class ReportListController extends Controller
             $results['report_qt'] = $this->quantityService->getReportListQuantity($results['data']);
 
 
-            return $this->printer($results, 'immobilecaptured::printer.reportList.ListImmobileCaptured');
+            return $this->printer($results, 'immobilecaptured::printer.reportList.ListImmobileCaptured', 'landscape');
         } else {
             return $results;
         }

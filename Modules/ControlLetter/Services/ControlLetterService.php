@@ -5,6 +5,7 @@ namespace Modules\ControlLetter\Services;
 
 use Carbon\Carbon;
 use Modules\Sicadi\Services\QueryService;
+use Modules\User\Services\UserService;
 
 class ControlLetterService
 {
@@ -16,11 +17,16 @@ class ControlLetterService
      * @var QueryService
      */
     private $queryService;
+    /**
+     * @var UserService
+     */
+    private $userService;
 
-    public function __construct(ControlLetterServiceCrud $serviceCrud, QueryService $queryService)
+    public function __construct(ControlLetterServiceCrud $serviceCrud, QueryService $queryService, UserService $userService)
     {
         $this->serviceCrud = $serviceCrud;
         $this->queryService = $queryService;
+        $this->userService = $userService;
     }
 
     public function mountLetter(string $typeLetter, array $data)
@@ -111,7 +117,8 @@ class ControlLetterService
             '@_PRAZO_CONTRATO',
             '@_DATA_INICIO_CONTRATO',
             '@_DATA_FIM_CONTRATO',
-            '@_DATA_PRIMEIRO_ALUGUEL'
+            '@_DATA_PRIMEIRO_ALUGUEL',
+            '@_ASSINATURA'
         ];
 
 
@@ -134,7 +141,8 @@ class ControlLetterService
             $contractData['contract_time'],
             $contractData['init_date_current_contract'],
             $dateEndContract,
-            $datePrimaryRent
+            $datePrimaryRent,
+            uppercase($this->userService->getNameById())
         ];
 
         return [
@@ -212,6 +220,7 @@ class ControlLetterService
             '@_EMAIL_INQUILINO',
             '@_TELEFONE_INQUILINO',
             '@_DATA_ENTREGA_CHAVES',
+            '@_ASSINATURA'
         ];
 
 
@@ -233,6 +242,7 @@ class ControlLetterService
             $tenantData['email'],
             $phones,
             date('d/m/Y', strtotime($data['end_process'])),
+            uppercase($this->userService->getNameById())
         ];
 
 
@@ -259,7 +269,7 @@ class ControlLetterService
         }
 
 
-        $path = public_path().'/storage/images/boas_vindas_locatario.jpg';
+        $path = public_path().'/storage/images/boas_vindas_locatario.png';
         $file = file_get_contents($path);
 
         $type = mime_content_type($path);
